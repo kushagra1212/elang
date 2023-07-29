@@ -54,10 +54,8 @@ std::shared_ptr<SyntaxToken<std::any>> Lexer::nextToken() {
             std::make_shared<SyntaxToken<std::any>>(
                 this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
                 text, 0);
-        logs.push_back(
-            Utils::getLineNumberAndPosition(
-                std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
-            "ERROR: bad number input not double: " + text);
+        logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
+                       "ERROR: bad number input not double: " + text);
         return newSyntaxToken;
       }
       double res = stod(text);
@@ -80,10 +78,8 @@ std::shared_ptr<SyntaxToken<std::any>> Lexer::nextToken() {
               this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
               text, 0);
 
-      logs.push_back(
-          Utils::getLineNumberAndPosition(
-              std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
-          "ERROR: bad number input not i32: " + text);
+      logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
+                     "ERROR: bad number input not i32: " + text);
       return newSyntaxToken;
     }
     int res = stoi(text);
@@ -319,11 +315,9 @@ std::shared_ptr<SyntaxToken<std::any>> Lexer::nextToken() {
             this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken,
             this->position++,
             this->text[lineNumber].substr(this->position - 1, 1), 0);
-    logs.push_back(
-        Utils::getLineNumberAndPosition(
-            std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
-        "ERROR: bad character input: " +
-        this->text[lineNumber].substr(this->position, 1));
+    logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
+                   "ERROR: bad character input: " +
+                   this->text[lineNumber].substr(this->position, 1));
 
     return (newSyntaxToken);
   }
@@ -340,10 +334,8 @@ std::shared_ptr<SyntaxToken<std::any>> Lexer::readString() {
               this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
               this->text[lineNumber].substr(start, this->position - start), 0);
 
-      logs.push_back(
-          Utils::getLineNumberAndPosition(
-              std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
-          "ERROR: unterminated string literal");
+      logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
+                     "ERROR: unterminated string literal");
       return (newSyntaxToken);
     }
     if (this->getCurrent() == '\\') {
@@ -370,11 +362,9 @@ std::shared_ptr<SyntaxToken<std::any>> Lexer::readString() {
                 this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
                 this->text[lineNumber].substr(start, this->position - start),
                 0);
-        logs.push_back(
-            Utils::getLineNumberAndPosition(
-                std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
-            "ERROR: bad character escape sequence: \\" +
-            this->text[lineNumber].substr(this->position, 1));
+        logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
+                       "ERROR: bad character escape sequence: \\" +
+                       this->text[lineNumber].substr(this->position, 1));
         return (newSyntaxToken);
       }
     } else {

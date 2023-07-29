@@ -8,7 +8,7 @@ template class BoundLiteralExpression<std::string>;
 template class BoundLiteralExpression<char>;
 
 Evaluator::Evaluator(std::shared_ptr<Evaluator> previous,
-                     CompilationUnitSyntax *compilation_unit) {
+                     std::shared_ptr<CompilationUnitSyntax> compilation_unit) {
   this->compilation_unit = compilation_unit;
 
   if (previous != nullptr)

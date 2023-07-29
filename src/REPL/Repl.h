@@ -24,11 +24,10 @@ public:
   bool handleSpecialCommands(const std::string &line);
   int countBraces(const std::string &line, char brace);
 
-  void compileAndEvaluate(CompilationUnitSyntax *compilationUnit,
-                          std::ostream &outputStream);
+  void
+  compileAndEvaluate(std::shared_ptr<CompilationUnitSyntax> compilationUnit,
+                     std::ostream &outputStream);
 
-  void compileAndEvaluateForTests(const std::string &line,
-                                  std::ostream &outputStream);
   // Data members
 private:
   std::shared_ptr<Evaluator> previousEvaluator;

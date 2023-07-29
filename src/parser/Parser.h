@@ -43,7 +43,7 @@ private:
   match(SyntaxKindUtils::SyntaxKind kind);
 
 public:
-  CompilationUnitSyntax *parseCompilationUnit();
+  std::shared_ptr<CompilationUnitSyntax> parseCompilationUnit();
 
 private:
   StatementSyntax *parseStatement();

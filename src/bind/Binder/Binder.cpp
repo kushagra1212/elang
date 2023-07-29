@@ -291,8 +291,9 @@ BoundScope *Binder::CreateParentScope(BoundScopeGlobal *parent) {
 
 Binder::Binder(BoundScope *parent) { this->root = new BoundScope(parent); }
 
-BoundScopeGlobal *Binder::bindGlobalScope(BoundScopeGlobal *previous,
-                                          CompilationUnitSyntax *syntax) {
+BoundScopeGlobal *
+Binder::bindGlobalScope(BoundScopeGlobal *previous,
+                        std::shared_ptr<CompilationUnitSyntax> syntax) {
 
   Binder *binder = new Binder(Binder::CreateParentScope(previous));
   BoundStatement *statement = binder->bindStatement(syntax->getStatement());

@@ -50,8 +50,9 @@ public:
   BoundExpression *bindExpression(ExpressionSyntax *syntax);
 
 public:
-  static BoundScopeGlobal *bindGlobalScope(BoundScopeGlobal *previous,
-                                           CompilationUnitSyntax *syntax);
+  static BoundScopeGlobal *
+  bindGlobalScope(BoundScopeGlobal *previous,
+                  std::shared_ptr<CompilationUnitSyntax> syntax);
 
 public:
   static BoundScope *CreateParentScope(BoundScopeGlobal *parent);

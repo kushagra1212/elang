@@ -26,10 +26,10 @@ private:
 
 public:
   std::any last_value;
-  CompilationUnitSyntax *compilation_unit;
+  std::shared_ptr<CompilationUnitSyntax> compilation_unit;
   std::shared_ptr<Evaluator> previous = nullptr;
   Evaluator(std::shared_ptr<Evaluator> previous,
-            CompilationUnitSyntax *compilation_unit);
+            std::shared_ptr<CompilationUnitSyntax> compilation_unit);
 
 public:
   BoundScopeGlobal *getRoot();

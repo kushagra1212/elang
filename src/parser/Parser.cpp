@@ -59,11 +59,12 @@ Parser::match(SyntaxKindUtils::SyntaxKind kind) {
       this->getCurrent()->getPosition(), "\0", 0);
 }
 
-CompilationUnitSyntax *Parser::parseCompilationUnit() {
+std::shared_ptr<CompilationUnitSyntax> Parser::parseCompilationUnit() {
   StatementSyntax *statement = this->parseStatement();
   std::shared_ptr<SyntaxToken<std::any>> endOfFileToken =
       this->match(SyntaxKindUtils::SyntaxKind::EndOfFileToken);
-  return new CompilationUnitSyntax(this->logs, statement, (endOfFileToken));
+  return std::make_shared<CompilationUnitSyntax>(this->logs, statement,
+                                                 std::move(endOfFileToken));
 }
 
 BlockStatementSyntax *Parser::parseBlockStatement() {

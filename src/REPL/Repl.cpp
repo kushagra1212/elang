@@ -43,23 +43,25 @@ void Repl::runWithStream(std::istream &inputStream,
     }
     std::unique_ptr<Parser> parser = std::make_unique<Parser>(text);
 
-    CompilationUnitSyntax *compilationUnit = (parser->parseCompilationUnit());
+    std::shared_ptr<CompilationUnitSyntax> compilationUnit =
+        (parser->parseCompilationUnit());
     if (!line.empty() && compilationUnit->logs.size()) {
       continue;
     } else {
-      compileAndEvaluate(compilationUnit, outputStream);
+      compileAndEvaluate((compilationUnit), outputStream);
     }
     text = std::vector<std::string>();
   }
 }
 
-void Repl::compileAndEvaluate(CompilationUnitSyntax *compilationUnit,
-                              std::ostream &outputStream) {
+void Repl::compileAndEvaluate(
+    std::shared_ptr<CompilationUnitSyntax> compilationUnit,
+    std::ostream &outputStream) {
 
   std::shared_ptr<Evaluator> currentEvaluator =
       previousEvaluator == nullptr
-          ? std::make_shared<Evaluator>(nullptr, compilationUnit)
-          : std::make_shared<Evaluator>((previousEvaluator), compilationUnit);
+          ? std::make_shared<Evaluator>(nullptr, (compilationUnit))
+          : std::make_shared<Evaluator>((previousEvaluator), (compilationUnit));
 
   BoundScopeGlobal *globalScope = currentEvaluator->getRoot();
   compilationUnit->logs.insert(compilationUnit->logs.end(),
@@ -139,9 +141,10 @@ void Repl::runForTest(std::istream &inputStream, std::ostream &outputStream) {
     }
     std::unique_ptr<Parser> parser = std::make_unique<Parser>(text);
 
-    CompilationUnitSyntax *compilationUnit = parser->parseCompilationUnit();
+    std::shared_ptr<CompilationUnitSyntax> compilationUnit =
+        parser->parseCompilationUnit();
 
-    this->compileAndEvaluate(compilationUnit, outputStream);
+    this->compileAndEvaluate((compilationUnit), outputStream);
   }
 }
 
