@@ -6,13 +6,13 @@
 class CompilationUnitSyntax {
 private:
   StatementSyntax *statement;
-  SyntaxToken<std::any> *endOfFileToken;
+  std::shared_ptr<SyntaxToken<std::any>> endOfFileToken;
 
 public:
   std::vector<std::string> logs;
   CompilationUnitSyntax(std::vector<std::string> &logs,
                         StatementSyntax *statement,
-                        SyntaxToken<std::any> *endOfFileToken);
+                        std::shared_ptr<SyntaxToken<std::any>> endOfFileToken);
 
 public:
   SyntaxKindUtils::SyntaxKind getKind();
@@ -21,6 +21,6 @@ public:
   StatementSyntax *getStatement();
 
 public:
-  SyntaxToken<std::any> *getEndOfFileToken();
+  std::shared_ptr<SyntaxToken<std::any>> getEndOfFileToken();
 };
 #endif

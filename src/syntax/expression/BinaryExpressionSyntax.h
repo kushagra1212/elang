@@ -6,13 +6,13 @@ class BinaryExpressionSyntax : public ExpressionSyntax {
 
 private:
   ExpressionSyntax *left;
-  SyntaxToken<std::any> *operatorToken;
+  std::shared_ptr<SyntaxToken<std::any>> operatorToken;
   ExpressionSyntax *right;
 
 public:
   std::vector<SyntaxNode *> children;
   BinaryExpressionSyntax(ExpressionSyntax *left,
-                         SyntaxToken<std::any> *operatorToken,
+                         std::shared_ptr<SyntaxToken<std::any>> operatorToken,
                          ExpressionSyntax *right);
 
 public:
@@ -22,7 +22,7 @@ public:
   ExpressionSyntax *getLeft();
 
 public:
-  SyntaxToken<std::any> *getOperatorToken();
+  std::shared_ptr<SyntaxToken<std::any>> getOperatorToken();
 
 public:
   ExpressionSyntax *getRight();

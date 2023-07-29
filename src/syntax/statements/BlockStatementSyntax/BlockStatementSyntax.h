@@ -3,21 +3,21 @@
 #include "../StatementSyntax.h"
 class BlockStatementSyntax : StatementSyntax {
 private:
-  SyntaxToken<std::any> *openBraceToken;
+  std::shared_ptr<SyntaxToken<std::any>> openBraceToken;
   std::vector<StatementSyntax *> statements;
-  SyntaxToken<std::any> *closeBraceToken;
+  std::shared_ptr<SyntaxToken<std::any>> closeBraceToken;
 
 public:
-  BlockStatementSyntax(SyntaxToken<std::any> *openBraceToken,
+  BlockStatementSyntax(std::shared_ptr<SyntaxToken<std::any>> openBraceToken,
                        std::vector<StatementSyntax *> statements,
-                       SyntaxToken<std::any> *closeBraceToken);
+                       std::shared_ptr<SyntaxToken<std::any>> closeBraceToken);
   SyntaxKindUtils::SyntaxKind getKind();
 
   std::vector<SyntaxNode *> getChildren();
 
-  SyntaxToken<std::any> *getOpenBraceToken();
+  std::shared_ptr<SyntaxToken<std::any>> getOpenBraceToken();
 
   std::vector<StatementSyntax *> getStatements();
 
-  SyntaxToken<std::any> *getCloseBraceToken();
+  std::shared_ptr<SyntaxToken<std::any>> getCloseBraceToken();
 };

@@ -1,12 +1,12 @@
 #include "ElseClauseSyntax.h"
 
-ElseClauseSyntax::ElseClauseSyntax(SyntaxToken<std::any> *elseKeyword,
-                                   BlockStatementSyntax *statement)
-    : elseKeyword(elseKeyword), statement(statement) {}
+ElseClauseSyntax::ElseClauseSyntax(
+    std::shared_ptr<SyntaxToken<std::any>> elseKeyword,
+    BlockStatementSyntax *statement)
+    : elseKeyword((elseKeyword)), statement(statement) {}
 
-SyntaxToken<std::any> *ElseClauseSyntax::getElseKeyword() const {
-
-  return elseKeyword;
+std::shared_ptr<SyntaxToken<std::any>> ElseClauseSyntax::getElseKeyword() {
+  return (elseKeyword);
 }
 
 BlockStatementSyntax *ElseClauseSyntax::getStatement() const {
@@ -18,5 +18,5 @@ SyntaxKindUtils::SyntaxKind ElseClauseSyntax::getKind() {
 }
 
 std::vector<SyntaxNode *> ElseClauseSyntax::getChildren() {
-  return {elseKeyword, (SyntaxNode *)statement};
+  return {new SyntaxToken<std::any>(*elseKeyword), (SyntaxNode *)statement};
 }

@@ -14,17 +14,17 @@ void Lexer::updatePosition() {
 }
 void Lexer::next() { this->position++; }
 
-SyntaxToken<std::any> *Lexer::nextToken() {
+std::shared_ptr<SyntaxToken<std::any>> Lexer::nextToken() {
   if (this->position >= this->text[lineNumber].length()) {
 
     this->updatePosition();
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::EndOfLineToken,
         this->position, "\0", 0);
   }
 
   if (this->lineNumber >= this->text.size()) {
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::EndOfFileToken,
         this->position, "\0", 0);
   }
@@ -50,18 +50,21 @@ SyntaxToken<std::any> *Lexer::nextToken() {
           throw std::exception();
         }
       } catch (std::exception e) {
-        SyntaxToken<std::any> *newSyntaxToken = new SyntaxToken<std::any>(
-            this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
-            text, 0);
-        logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
-                       "ERROR: bad number input not double: " + text);
+        std::shared_ptr<SyntaxToken<std::any>> newSyntaxToken =
+            std::make_shared<SyntaxToken<std::any>>(
+                this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
+                text, 0);
+        logs.push_back(
+            Utils::getLineNumberAndPosition(
+                std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
+            "ERROR: bad number input not double: " + text);
         return newSyntaxToken;
       }
       double res = stod(text);
 
-      return new SyntaxToken<std::any>(this->lineNumber,
-                                       SyntaxKindUtils::SyntaxKind::NumberToken,
-                                       start, text, (res));
+      return std::make_shared<SyntaxToken<std::any>>(
+          this->lineNumber, SyntaxKindUtils::SyntaxKind::NumberToken, start,
+          text, (res));
     }
 
     int length = this->position - start;
@@ -72,19 +75,22 @@ SyntaxToken<std::any> *Lexer::nextToken() {
       }
     } catch (std::exception e) {
 
-      SyntaxToken<std::any> *newSyntaxToken = new SyntaxToken<std::any>(
-          this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start, text,
-          0);
+      std::shared_ptr<SyntaxToken<std::any>> newSyntaxToken =
+          std::make_shared<SyntaxToken<std::any>>(
+              this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
+              text, 0);
 
-      logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
-                     "ERROR: bad number input not i32: " + text);
+      logs.push_back(
+          Utils::getLineNumberAndPosition(
+              std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
+          "ERROR: bad number input not i32: " + text);
       return newSyntaxToken;
     }
     int res = stoi(text);
 
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::NumberToken,
-                                     start, text, res);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::NumberToken, start, text,
+        res);
   }
 
   // Check true or false
@@ -97,58 +103,58 @@ SyntaxToken<std::any> *Lexer::nextToken() {
     int length = this->position - start;
     std::string text = this->text[lineNumber].substr(start, length);
     if (text == "true") {
-      return new SyntaxToken<std::any>(this->lineNumber,
-                                       SyntaxKindUtils::SyntaxKind::TrueKeyword,
-                                       start, text, true);
+      return std::make_shared<SyntaxToken<std::any>>(
+          this->lineNumber, SyntaxKindUtils::SyntaxKind::TrueKeyword, start,
+          text, true);
     }
     if (text == "false") {
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::FalseKeyword, start,
           text, false);
     }
     if (text == "var") {
-      return new SyntaxToken<std::any>(this->lineNumber,
-                                       SyntaxKindUtils::SyntaxKind::VarKeyword,
-                                       start, text, "var");
+      return std::make_shared<SyntaxToken<std::any>>(
+          this->lineNumber, SyntaxKindUtils::SyntaxKind::VarKeyword, start,
+          text, "var");
     }
 
     if (text == "if") {
-      return new SyntaxToken<std::any>(this->lineNumber,
-                                       SyntaxKindUtils::SyntaxKind::IfKeyword,
-                                       start, text, "if");
+      return std::make_shared<SyntaxToken<std::any>>(
+          this->lineNumber, SyntaxKindUtils::SyntaxKind::IfKeyword, start, text,
+          "if");
     }
 
     if (text == "else") {
-      return new SyntaxToken<std::any>(this->lineNumber,
-                                       SyntaxKindUtils::SyntaxKind::ElseKeyword,
-                                       start, text, "else");
+      return std::make_shared<SyntaxToken<std::any>>(
+          this->lineNumber, SyntaxKindUtils::SyntaxKind::ElseKeyword, start,
+          text, "else");
     }
 
     if (text == "while") {
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::WhileKeyword, start,
           text, "while");
     }
 
     if (text == "for") {
-      return new SyntaxToken<std::any>(this->lineNumber,
-                                       SyntaxKindUtils::SyntaxKind::ForKeyword,
-                                       start, text, "for");
+      return std::make_shared<SyntaxToken<std::any>>(
+          this->lineNumber, SyntaxKindUtils::SyntaxKind::ForKeyword, start,
+          text, "for");
     }
 
     if (text == "to") {
-      return new SyntaxToken<std::any>(this->lineNumber,
-                                       SyntaxKindUtils::SyntaxKind::ToKeyword,
-                                       start, text, "to");
+      return std::make_shared<SyntaxToken<std::any>>(
+          this->lineNumber, SyntaxKindUtils::SyntaxKind::ToKeyword, start, text,
+          "to");
     }
 
     if (text == "const") {
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::ConstKeyword, start,
           text, "const");
     }
 
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::IdentifierToken, start,
         text, (text));
   }
@@ -160,34 +166,34 @@ SyntaxToken<std::any> *Lexer::nextToken() {
     }
     int length = this->position - start;
     std::string text = this->text[lineNumber].substr(start, length);
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::WhitespaceToken, start,
         text, 0);
   }
 
   switch (this->getCurrent()) {
   case '+':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::PlusToken,
-                                     this->position++, "+", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::PlusToken,
+        this->position++, "+", 0);
   case '-':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::MinusToken,
-                                     this->position++, "-", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::MinusToken,
+        this->position++, "-", 0);
   case '*':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::StarToken,
-                                     this->position++, "*", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::StarToken,
+        this->position++, "*", 0);
   case '/':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::SlashToken,
-                                     this->position++, "/", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::SlashToken,
+        this->position++, "/", 0);
   case '(':
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::OpenParenthesisToken,
         this->position++, "(", 0);
   case ')':
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::CloseParenthesisToken,
         this->position++, ")", 0);
   case '&': {
@@ -195,54 +201,54 @@ SyntaxToken<std::any> *Lexer::nextToken() {
     if (this->position + 1 < this->text[lineNumber].length() &&
         this->text[lineNumber][this->position + 1] == '&') {
       this->next();
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber,
           SyntaxKindUtils::SyntaxKind::AmpersandAmpersandToken,
           this->position++, "&&", 0);
     }
 
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::AmpersandToken,
         this->position++, "&", 0);
   }
   case '^':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::CaretToken,
-                                     this->position++, "^", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::CaretToken,
+        this->position++, "^", 0);
   case '%':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::PercentToken,
-                                     this->position++, "%", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::PercentToken,
+        this->position++, "%", 0);
   case '~':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::TildeToken,
-                                     this->position++, "~", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::TildeToken,
+        this->position++, "~", 0);
   case '|': {
 
     if (this->position + 1 < this->text[lineNumber].length() &&
         this->text[lineNumber][this->position + 1] == '|') {
       this->next();
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::PipePipeToken,
           this->position++, "||", 0);
     }
 
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::PipeToken,
-                                     this->position++, "|", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::PipeToken,
+        this->position++, "|", 0);
   }
   case '=': {
 
     if (this->position + 1 < this->text[lineNumber].length() &&
         this->text[lineNumber][this->position + 1] == '=') {
       this->next();
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::EqualsEqualsToken,
           this->position++, "==", 0);
     }
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::EqualsToken,
-                                     this->position++, "=", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::EqualsToken,
+        this->position++, "=", 0);
   }
 
   case '!': {
@@ -250,13 +256,13 @@ SyntaxToken<std::any> *Lexer::nextToken() {
     if (this->position + 1 < this->text[lineNumber].length() &&
         this->text[lineNumber][this->position + 1] == '=') {
       this->next();
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::BangEqualsToken,
           this->position++, "!=", 0);
     }
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::BangToken,
-                                     this->position++, "!", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::BangToken,
+        this->position++, "!", 0);
   }
 
   case '<': {
@@ -264,13 +270,13 @@ SyntaxToken<std::any> *Lexer::nextToken() {
     if (this->position + 1 < this->text[lineNumber].length() &&
         this->text[lineNumber][this->position + 1] == '=') {
       this->next();
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::LessOrEqualsToken,
           this->position++, "<=", 0);
     }
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::LessToken,
-                                     this->position++, "<", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::LessToken,
+        this->position++, "<", 0);
   }
 
   case '>': {
@@ -278,61 +284,67 @@ SyntaxToken<std::any> *Lexer::nextToken() {
     if (this->position + 1 < this->text[lineNumber].length() &&
         this->text[lineNumber][this->position + 1] == '=') {
       this->next();
-      return new SyntaxToken<std::any>(
+      return std::make_shared<SyntaxToken<std::any>>(
           this->lineNumber, SyntaxKindUtils::SyntaxKind::GreaterOrEqualsToken,
           this->position++, ">=", 0);
     }
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::GreaterToken,
-                                     this->position++, ">", 0);
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::GreaterToken,
+        this->position++, ">", 0);
   }
 
   case ';':
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::SemicolonToken,
         this->position++, ";", 0);
   case ',':
-    return new SyntaxToken<std::any>(this->lineNumber,
-                                     SyntaxKindUtils::SyntaxKind::CommaToken,
-                                     this->position++, ",", ",");
+    return std::make_shared<SyntaxToken<std::any>>(
+        this->lineNumber, SyntaxKindUtils::SyntaxKind::CommaToken,
+        this->position++, ",", ",");
   case '{':
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::OpenBraceToken,
         this->position++, "{", 0);
   case '}':
-    return new SyntaxToken<std::any>(
+    return std::make_shared<SyntaxToken<std::any>>(
         this->lineNumber, SyntaxKindUtils::SyntaxKind::CloseBraceToken,
         this->position++, "}", 0);
   case '"':
-    return this->readString();
+    return (this->readString());
 
   default:
 
-    SyntaxToken<std::any> *newSyntaxToken = new SyntaxToken<std::any>(
-        this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken,
-        this->position++, this->text[lineNumber].substr(this->position - 1, 1),
-        0);
-    logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
-                   "ERROR: bad character input: " +
-                   this->text[lineNumber].substr(this->position, 1));
+    std::shared_ptr<SyntaxToken<std::any>> newSyntaxToken =
+        std::make_shared<SyntaxToken<std::any>>(
+            this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken,
+            this->position++,
+            this->text[lineNumber].substr(this->position - 1, 1), 0);
+    logs.push_back(
+        Utils::getLineNumberAndPosition(
+            std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
+        "ERROR: bad character input: " +
+        this->text[lineNumber].substr(this->position, 1));
 
-    return newSyntaxToken;
+    return (newSyntaxToken);
   }
 }
 
-SyntaxToken<std::any> *Lexer::readString() {
+std::shared_ptr<SyntaxToken<std::any>> Lexer::readString() {
   int start = this->position++;
   std::string text = "";
   while (this->getCurrent() != '"') {
     if (this->getCurrent() == '\0') {
 
-      SyntaxToken<std::any> *newSyntaxToken = new SyntaxToken<std::any>(
-          this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
-          this->text[lineNumber].substr(start, this->position - start), 0);
+      std::shared_ptr<SyntaxToken<std::any>> newSyntaxToken =
+          std::make_shared<SyntaxToken<std::any>>(
+              this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
+              this->text[lineNumber].substr(start, this->position - start), 0);
 
-      logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
-                     "ERROR: unterminated string literal");
-      return newSyntaxToken;
+      logs.push_back(
+          Utils::getLineNumberAndPosition(
+              std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
+          "ERROR: unterminated string literal");
+      return (newSyntaxToken);
     }
     if (this->getCurrent() == '\\') {
       this->next();
@@ -353,13 +365,17 @@ SyntaxToken<std::any> *Lexer::readString() {
         text += '\t';
         break;
       default:
-        SyntaxToken<std::any> *newSyntaxToken = new SyntaxToken<std::any>(
-            this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
-            this->text[lineNumber].substr(start, this->position - start), 0);
-        logs.push_back(Utils::getLineNumberAndPosition(newSyntaxToken) +
-                       "ERROR: bad character escape sequence: \\" +
-                       this->text[lineNumber].substr(this->position, 1));
-        return newSyntaxToken;
+        std::shared_ptr<SyntaxToken<std::any>> newSyntaxToken =
+            std::make_shared<SyntaxToken<std::any>>(
+                this->lineNumber, SyntaxKindUtils::SyntaxKind::BadToken, start,
+                this->text[lineNumber].substr(start, this->position - start),
+                0);
+        logs.push_back(
+            Utils::getLineNumberAndPosition(
+                std::make_shared<SyntaxToken<std::any>>(*newSyntaxToken)) +
+            "ERROR: bad character escape sequence: \\" +
+            this->text[lineNumber].substr(this->position, 1));
+        return (newSyntaxToken);
       }
     } else {
       text += this->getCurrent();
@@ -367,7 +383,7 @@ SyntaxToken<std::any> *Lexer::readString() {
     this->next();
   }
   this->next();
-  return new SyntaxToken<std::any>(
+  return std::make_shared<SyntaxToken<std::any>>(
       this->lineNumber, SyntaxKindUtils::SyntaxKind::StringToken, start,
       this->text[lineNumber].substr(start, this->position - start), (text));
 

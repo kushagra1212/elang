@@ -7,20 +7,20 @@
 
 class VariableDeclarationSyntax : public StatementSyntax {
 private:
-  SyntaxToken<std::any> *_keyword;
-  SyntaxToken<std::any> *_identifier;
-  SyntaxToken<std::any> *_equalsToken;
+  std::shared_ptr<SyntaxToken<std::any>> _keyword;
+  std::shared_ptr<SyntaxToken<std::any>> _identifier;
+  std::shared_ptr<SyntaxToken<std::any>> _equalsToken;
   ExpressionSyntax *_initializer;
 
 public:
-  VariableDeclarationSyntax(SyntaxToken<std::any> *keyword,
-                            SyntaxToken<std::any> *identifier,
-                            SyntaxToken<std::any> *equalsToken,
+  VariableDeclarationSyntax(std::shared_ptr<SyntaxToken<std::any>> keyword,
+                            std::shared_ptr<SyntaxToken<std::any>> identifier,
+                            std::shared_ptr<SyntaxToken<std::any>> equalsToken,
                             ExpressionSyntax *initializer);
   SyntaxKindUtils::SyntaxKind getKind() override;
   std::vector<SyntaxNode *> getChildren() override;
-  SyntaxToken<std::any> *getIdentifier() const;
-  SyntaxToken<std::any> *getEqualsToken() const;
+  std::shared_ptr<SyntaxToken<std::any>> getIdentifier();
+  std::shared_ptr<SyntaxToken<std::any>> getEqualsToken();
   ExpressionSyntax *getInitializer() const;
-  SyntaxToken<std::any> *getKeyword() const;
+  std::shared_ptr<SyntaxToken<std::any>> getKeyword();
 };

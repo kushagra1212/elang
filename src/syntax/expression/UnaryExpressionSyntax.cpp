@@ -1,11 +1,12 @@
 #include "UnaryExpressionSyntax.h"
 
 UnaryExpressionSyntax::UnaryExpressionSyntax(
-    SyntaxToken<std::any> *operatorToken, ExpressionSyntax *operand) {
+    std::shared_ptr<SyntaxToken<std::any>> operatorToken,
+    ExpressionSyntax *operand) {
 
-  this->operatorToken = operatorToken;
+  this->operatorToken = (operatorToken);
   this->operand = operand;
-  children.push_back(this->operatorToken);
+  children.push_back(new SyntaxToken<std::any>(*this->operatorToken));
   children.push_back(this->operand);
 }
 
@@ -13,8 +14,9 @@ SyntaxKindUtils::SyntaxKind UnaryExpressionSyntax::getKind() {
   return SyntaxKindUtils::SyntaxKind::UnaryExpression;
 }
 
-SyntaxToken<std::any> *UnaryExpressionSyntax::getOperatorToken() {
-  return this->operatorToken;
+std::shared_ptr<SyntaxToken<std::any>>
+UnaryExpressionSyntax::getOperatorToken() {
+  return (this->operatorToken);
 }
 
 ExpressionSyntax *UnaryExpressionSyntax::getOperand() { return this->operand; }

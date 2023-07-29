@@ -1,14 +1,14 @@
 #include "IfStatementSyntax.h"
 
-IfStatementSyntax::IfStatementSyntax(SyntaxToken<std::any> *ifKeyword,
-                                     ExpressionSyntax *condition,
-                                     BlockStatementSyntax *statement,
-                                     ElseClauseSyntax *elseClause)
-    : ifKeyword(ifKeyword), condition(condition), statement(statement),
+IfStatementSyntax::IfStatementSyntax(
+    std::shared_ptr<SyntaxToken<std::any>> ifKeyword,
+    ExpressionSyntax *condition, BlockStatementSyntax *statement,
+    ElseClauseSyntax *elseClause)
+    : ifKeyword((ifKeyword)), condition(condition), statement(statement),
       elseClause(elseClause) {}
 
-SyntaxToken<std::any> *IfStatementSyntax::getIfKeyword() const {
-  return ifKeyword;
+std::shared_ptr<SyntaxToken<std::any>> IfStatementSyntax::getIfKeyword() {
+  return (ifKeyword);
 }
 
 ExpressionSyntax *IfStatementSyntax::getCondition() const { return condition; }
@@ -26,8 +26,8 @@ SyntaxKindUtils::SyntaxKind IfStatementSyntax::getKind() {
 }
 
 std::vector<SyntaxNode *> IfStatementSyntax::getChildren() {
-  std::vector<SyntaxNode *> children = {ifKeyword, condition,
-                                        (SyntaxNode *)statement};
+  std::vector<SyntaxNode *> children = {new SyntaxToken<std::any>(*ifKeyword),
+                                        condition, (SyntaxNode *)statement};
   if (elseClause != nullptr) {
     children.push_back(elseClause);
   }

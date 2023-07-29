@@ -41,13 +41,11 @@ void Repl::runWithStream(std::istream &inputStream,
     if (braceCount) {
       continue;
     }
-    Parser *parser = new Parser(text);
+    std::unique_ptr<Parser> parser = std::make_unique<Parser>(text);
 
     CompilationUnitSyntax *compilationUnit = (parser->parseCompilationUnit());
     if (!line.empty() && compilationUnit->logs.size()) {
       continue;
-    } else if (line.empty() && text.size()) {
-      compileAndEvaluate(compilationUnit, outputStream);
     } else {
       compileAndEvaluate(compilationUnit, outputStream);
     }
@@ -58,11 +56,10 @@ void Repl::runWithStream(std::istream &inputStream,
 void Repl::compileAndEvaluate(CompilationUnitSyntax *compilationUnit,
                               std::ostream &outputStream) {
 
-  std::unique_ptr<Evaluator> currentEvaluator =
+  std::shared_ptr<Evaluator> currentEvaluator =
       previousEvaluator == nullptr
-          ? std::make_unique<Evaluator>(nullptr, compilationUnit)
-          : std::make_unique<Evaluator>(std::move(previousEvaluator),
-                                        compilationUnit);
+          ? std::make_shared<Evaluator>(nullptr, compilationUnit)
+          : std::make_shared<Evaluator>((previousEvaluator), compilationUnit);
 
   BoundScopeGlobal *globalScope = currentEvaluator->getRoot();
   compilationUnit->logs.insert(compilationUnit->logs.end(),
@@ -140,7 +137,7 @@ void Repl::runForTest(std::istream &inputStream, std::ostream &outputStream) {
     if (braceCount) {
       continue;
     }
-    Parser *parser = new Parser(text);
+    std::unique_ptr<Parser> parser = std::make_unique<Parser>(text);
 
     CompilationUnitSyntax *compilationUnit = parser->parseCompilationUnit();
 

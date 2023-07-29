@@ -8,24 +8,25 @@
 
 class CallExpressionSyntax : public ExpressionSyntax {
 public:
-  CallExpressionSyntax(ExpressionSyntax *identifier,
-                       SyntaxToken<std::any> *openParenthesisToken,
-                       std::vector<ExpressionSyntax *> arguments,
-                       SyntaxToken<std::any> *closeParenthesisToken);
+  CallExpressionSyntax(
+      ExpressionSyntax *identifier,
+      std::shared_ptr<SyntaxToken<std::any>> openParenthesisToken,
+      std::vector<ExpressionSyntax *> arguments,
+      std::shared_ptr<SyntaxToken<std::any>> closeParenthesisToken);
 
   ExpressionSyntax *getIdentifier() const;
-  SyntaxToken<std::any> *getOpenParenthesisToken() const;
+  std::shared_ptr<SyntaxToken<std::any>> getOpenParenthesisToken();
   std::vector<ExpressionSyntax *> getArguments() const;
-  SyntaxToken<std::any> *getCloseParenthesisToken() const;
+  std::shared_ptr<SyntaxToken<std::any>> getCloseParenthesisToken();
   SyntaxKindUtils::SyntaxKind getKind() override;
 
   std::vector<SyntaxNode *> getChildren() override;
 
 private:
   ExpressionSyntax *identifier;
-  SyntaxToken<std::any> *openParenthesisToken;
+  std::shared_ptr<SyntaxToken<std::any>> openParenthesisToken;
   std::vector<ExpressionSyntax *> arguments;
-  SyntaxToken<std::any> *closeParenthesisToken;
+  std::shared_ptr<SyntaxToken<std::any>> closeParenthesisToken;
 };
 
 #endif // CALL_EXPRESSION_SYNTAX_H

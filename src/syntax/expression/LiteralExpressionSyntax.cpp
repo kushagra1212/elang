@@ -8,9 +8,9 @@ template class LiteralExpressionSyntax<std::string>;
 template class LiteralExpressionSyntax<char>;
 template <typename T>
 LiteralExpressionSyntax<T>::LiteralExpressionSyntax(
-    SyntaxToken<std::any> *token, T value) {
+    std::shared_ptr<SyntaxToken<std::any>> token, T value) {
 
-  this->token = token;
+  this->token = (token);
   this->value = value;
 }
 template <typename T>
@@ -21,13 +21,14 @@ template <typename T> std::string LiteralExpressionSyntax<T>::getKindText() {
   return SyntaxKindUtils::enum_to_string_map[this->getKind()];
 }
 template <typename T>
-SyntaxToken<std::any> *LiteralExpressionSyntax<T>::getToken() {
-  return this->token;
+std::shared_ptr<SyntaxToken<std::any>> LiteralExpressionSyntax<T>::getToken() {
+  return (this->token);
 }
 template <typename T>
 std::vector<SyntaxNode *> LiteralExpressionSyntax<T>::getChildren() {
 
-  std::vector<SyntaxNode *> children = {this->token};
+  std::vector<SyntaxNode *> children = {
+      new SyntaxToken<std::any>(*this->token)};
   return children;
 }
 template <typename T> T LiteralExpressionSyntax<T>::getValue() {

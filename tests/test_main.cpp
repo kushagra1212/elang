@@ -666,7 +666,9 @@ public:
 
   void setInput(const std::vector<std::string> &input) { lexer = Lexer(input); }
 
-  SyntaxToken<std::any> *readString() { return lexer.readString(); }
+  std::shared_ptr<SyntaxToken<std::any>> readString() {
+    return lexer.readString();
+  }
 
   LexerTest() : lexer(std::vector<std::string>{}) {}
 };
@@ -675,7 +677,8 @@ public:
 // TEST_F(LexerTest, TestValidStringLiteral) {
 //   std::string input = "Hello, world!";
 //   setInput(input);
-//   SyntaxToken<std::any> *token = LexerTest::lexer.readString();
+//   std::shared_ptr<SyntaxToken<std::any>>token =
+//   LexerTest::lexer.readString();
 
 //   ASSERT_EQ(token->getKind(), SyntaxKindUtils::SyntaxKind::StringToken);
 //   ASSERT_EQ(std::any_cast<std::string>(token->getValue()), "Hello, world!");
@@ -685,7 +688,7 @@ public:
 // TEST_F(LexerTest, TestUnterminatedStringLiteral) {
 //   std::string input = "Hello, world!";
 //   setInput(input);
-//   SyntaxToken<std::any> *token = readString();
+//   std::shared_ptr<SyntaxToken<std::any>>token = readString();
 
 //   ASSERT_EQ(token->getKind(), SyntaxKindUtils::SyntaxKind::BadToken);
 //   ASSERT_TRUE(token->getText().find("ERROR: unterminated string literal") !=
@@ -696,7 +699,7 @@ public:
 // TEST_F(LexerTest, TestInvalidEscapeSequence) {
 //   std::string input = "Hello, \\world!";
 //   setInput(input);
-//   SyntaxToken<std::any> *token = readString();
+//   std::shared_ptr<SyntaxToken<std::any>>token = readString();
 
 //   ASSERT_EQ(token->getKind(), SyntaxKindUtils::SyntaxKind::BadToken);
 //   ASSERT_TRUE(token->getText().find("ERROR: bad character escape sequence")
@@ -711,7 +714,7 @@ public:
 
 //   std::string input = "Hello, world!";
 //   setInput(input);
-//   SyntaxToken<std::any> *token = readString();
+//   std::shared_ptr<SyntaxToken<std::any>>token = readString();
 //   delete token;
 // }
 

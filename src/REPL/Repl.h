@@ -31,7 +31,7 @@ public:
                                   std::ostream &outputStream);
   // Data members
 private:
-  std::unique_ptr<Evaluator> previousEvaluator;
+  std::shared_ptr<Evaluator> previousEvaluator;
   bool seeTree;
   std::vector<std::string> text;
   int braceCount;

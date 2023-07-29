@@ -5,19 +5,19 @@
 #include "../BlockStatementSyntax/BlockStatementSyntax.h"
 class WhileStatementSyntax : public StatementSyntax {
 private:
-  SyntaxToken<std::any> *_whileKeyword;
+  std::shared_ptr<SyntaxToken<std::any>> _whileKeyword;
   ExpressionSyntax *_condition;
   BlockStatementSyntax *_body;
 
 public:
-  WhileStatementSyntax(SyntaxToken<std::any> *whileKeyword,
+  WhileStatementSyntax(std::shared_ptr<SyntaxToken<std::any>> whileKeyword,
                        ExpressionSyntax *condition, BlockStatementSyntax *body);
 
   SyntaxKindUtils::SyntaxKind getKind() override;
 
   std::vector<SyntaxNode *> getChildren() override;
 
-  SyntaxToken<std::any> *getWhileKeyword() const;
+  std::shared_ptr<SyntaxToken<std::any>> getWhileKeyword();
 
   ExpressionSyntax *getCondition() const;
 

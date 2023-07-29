@@ -6,19 +6,19 @@
 class UnaryExpressionSyntax : public ExpressionSyntax {
 
 private:
-  SyntaxToken<std::any> *operatorToken;
+  std::shared_ptr<SyntaxToken<std::any>> operatorToken;
   ExpressionSyntax *operand;
 
 public:
   std::vector<SyntaxNode *> children;
-  UnaryExpressionSyntax(SyntaxToken<std::any> *operatorToken,
+  UnaryExpressionSyntax(std::shared_ptr<SyntaxToken<std::any>> operatorToken,
                         ExpressionSyntax *operand);
 
 public:
   SyntaxKindUtils::SyntaxKind getKind();
 
 public:
-  SyntaxToken<std::any> *getOperatorToken();
+  std::shared_ptr<SyntaxToken<std::any>> getOperatorToken();
 
 public:
   ExpressionSyntax *getOperand();

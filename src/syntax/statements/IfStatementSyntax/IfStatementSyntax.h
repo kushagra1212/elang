@@ -7,12 +7,12 @@
 #include "../StatementSyntax.h"
 class IfStatementSyntax : public StatementSyntax {
 public:
-  IfStatementSyntax(SyntaxToken<std::any> *ifKeyword,
+  IfStatementSyntax(std::shared_ptr<SyntaxToken<std::any>> ifKeyword,
                     ExpressionSyntax *condition,
                     BlockStatementSyntax *statement,
                     ElseClauseSyntax *elseClause);
 
-  SyntaxToken<std::any> *getIfKeyword() const;
+  std::shared_ptr<SyntaxToken<std::any>> getIfKeyword();
   ExpressionSyntax *getCondition() const;
   BlockStatementSyntax *getStatement() const;
   ElseClauseSyntax *getElseClause() const;
@@ -21,7 +21,7 @@ public:
   std::vector<SyntaxNode *> getChildren() override;
 
 private:
-  SyntaxToken<std::any> *ifKeyword;
+  std::shared_ptr<SyntaxToken<std::any>> ifKeyword;
   ExpressionSyntax *condition;
   BlockStatementSyntax *statement;
   ElseClauseSyntax *elseClause;

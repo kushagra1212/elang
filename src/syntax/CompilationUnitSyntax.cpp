@@ -2,9 +2,9 @@
 
 CompilationUnitSyntax::CompilationUnitSyntax(
     std::vector<std::string> &logs, StatementSyntax *statement,
-    SyntaxToken<std::any> *endOfFileToken) {
+    std::shared_ptr<SyntaxToken<std::any>> endOfFileToken) {
   this->statement = statement;
-  this->endOfFileToken = endOfFileToken;
+  this->endOfFileToken = (endOfFileToken);
   this->logs = logs;
 }
 
@@ -16,6 +16,7 @@ StatementSyntax *CompilationUnitSyntax::getStatement() {
   return this->statement;
 }
 
-SyntaxToken<std::any> *CompilationUnitSyntax::getEndOfFileToken() {
-  return this->endOfFileToken;
+std::shared_ptr<SyntaxToken<std::any>>
+CompilationUnitSyntax::getEndOfFileToken() {
+  return (this->endOfFileToken);
 }

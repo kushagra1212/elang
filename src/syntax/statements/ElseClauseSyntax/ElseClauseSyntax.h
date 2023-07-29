@@ -6,13 +6,13 @@
 #include "../StatementSyntax.h"
 class ElseClauseSyntax : public SyntaxNode {
 private:
-  SyntaxToken<std::any> *elseKeyword;
+  std::shared_ptr<SyntaxToken<std::any>> elseKeyword;
   BlockStatementSyntax *statement;
 
 public:
-  ElseClauseSyntax(SyntaxToken<std::any> *elseKeyword,
+  ElseClauseSyntax(std::shared_ptr<SyntaxToken<std::any>> elseKeyword,
                    BlockStatementSyntax *statement);
-  SyntaxToken<std::any> *getElseKeyword() const;
+  std::shared_ptr<SyntaxToken<std::any>> getElseKeyword();
   BlockStatementSyntax *getStatement() const;
   SyntaxKindUtils::SyntaxKind getKind() override;
   std::vector<SyntaxNode *> getChildren() override;
