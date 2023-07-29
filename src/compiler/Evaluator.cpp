@@ -14,7 +14,7 @@ Evaluator::Evaluator(std::shared_ptr<Evaluator> previous,
   if (previous != nullptr)
     this->previous = (previous);
 }
-BoundScopeGlobal *Evaluator::getRoot() {
+std::shared_ptr<BoundScopeGlobal> Evaluator::getRoot() {
   if (root == nullptr) {
     if (previous != nullptr)
       root = Binder::bindGlobalScope(previous->root, compilation_unit);
@@ -24,26 +24,28 @@ BoundScopeGlobal *Evaluator::getRoot() {
   return root;
 }
 
-void Evaluator::evaluateStatement(BoundStatement *node) {
+void Evaluator::evaluateStatement(std::shared_ptr<BoundStatement> node) {
   switch (node->getKind()) {
   case BinderKindUtils::BoundNodeKind::ExpressionStatement: {
-    BoundExpressionStatement *expressionStatement =
-        (BoundExpressionStatement *)node;
+    std::shared_ptr<BoundExpressionStatement> expressionStatement =
+        std::static_pointer_cast<BoundExpressionStatement>(node);
     last_value = this->evaluate<std::any>(expressionStatement->getExpression());
     break;
   }
   case BinderKindUtils::BoundNodeKind::BlockStatement: {
 
-    BoundBlockStatement *blockStatement = (BoundBlockStatement *)node;
-    std::vector<BoundStatement *> statements = blockStatement->getStatements();
-    for (BoundStatement *statement : statements) {
+    std::shared_ptr<BoundBlockStatement> blockStatement =
+        std::static_pointer_cast<BoundBlockStatement>(node);
+    std::vector<std::shared_ptr<BoundStatement>> statements =
+        blockStatement->getStatements();
+    for (std::shared_ptr<BoundStatement> statement : statements) {
       this->evaluateStatement(statement);
     }
     break;
   }
   case BinderKindUtils::BoundNodeKind::VariableDeclaration: {
-    BoundVariableDeclaration *variableDeclaration =
-        (BoundVariableDeclaration *)node;
+    std::shared_ptr<BoundVariableDeclaration> variableDeclaration =
+        std::static_pointer_cast<BoundVariableDeclaration>(node);
     std::string variable_name = variableDeclaration->getVariable();
 
     this->root->variables[variable_name] = Utils::Variable(
@@ -54,7 +56,8 @@ void Evaluator::evaluateStatement(BoundStatement *node) {
     break;
   }
   case BinderKindUtils::BoundNodeKind::IfStatement: {
-    BoundIfStatement *ifStatement = (BoundIfStatement *)node;
+    std::shared_ptr<BoundIfStatement> ifStatement =
+        std::static_pointer_cast<BoundIfStatement>(node);
     std::any condition = this->evaluate<std::any>(ifStatement->getCondition());
 
     if (condition.type() == typeid(bool)) {
@@ -77,7 +80,8 @@ void Evaluator::evaluateStatement(BoundStatement *node) {
   }
 
   case BinderKindUtils::BoundNodeKind::WhileStatement: {
-    BoundWhileStatement *whileStatement = (BoundWhileStatement *)node;
+    std::shared_ptr<BoundWhileStatement> whileStatement =
+        std::dynamic_pointer_cast<BoundWhileStatement>(node);
     std::any condition =
         this->evaluate<std::any>(whileStatement->getCondition());
 
@@ -99,14 +103,16 @@ void Evaluator::evaluateStatement(BoundStatement *node) {
   }
 
   case BinderKindUtils::BoundNodeKind::ForStatement: {
-    BoundForStatement *forStatement = (BoundForStatement *)node;
+    std::shared_ptr<BoundForStatement> forStatement =
+        std::dynamic_pointer_cast<BoundForStatement>(node);
     std::string variable_name = "";
 
     std::any lowerBound = 0;
     if (forStatement->getInitialization()->getKind() ==
         BinderKindUtils::BoundNodeKind::VariableDeclaration) {
-      BoundVariableDeclaration *variableDeclaration =
-          (BoundVariableDeclaration *)forStatement->getInitialization();
+      std::shared_ptr<BoundVariableDeclaration> variableDeclaration =
+          std::dynamic_pointer_cast<BoundVariableDeclaration>(
+              forStatement->getInitialization());
 
       variable_name = variableDeclaration->getVariable();
       this->evaluateStatement(variableDeclaration);
@@ -157,11 +163,14 @@ void Evaluator::evaluateStatement(BoundStatement *node) {
   }
 }
 
-template <typename T> T Evaluator::evaluate(BoundExpression *node) {
+template <typename T>
+T Evaluator::evaluate(std::shared_ptr<BoundExpression> node) {
 
   switch (node->getKind()) {
   case BinderKindUtils::BoundNodeKind::LiteralExpression: {
-    std::any value = ((BoundLiteralExpression<std::any> *)node)->getValue();
+    std::any value =
+        (std::dynamic_pointer_cast<BoundLiteralExpression<std::any>>(node))
+            ->getValue();
     if (value.type() == typeid(int)) {
       return std::any_cast<int>(value);
     } else if (value.type() == typeid(bool)) {
@@ -175,15 +184,16 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
     }
   }
   case BinderKindUtils::BoundNodeKind::UnaryExpression: {
-    BoundUnaryExpression *unaryExpression = (BoundUnaryExpression *)node;
+    std::shared_ptr<BoundUnaryExpression> unaryExpression =
+        std::dynamic_pointer_cast<BoundUnaryExpression>(node);
     std::any operand_any =
         (this->evaluate<std::any>(unaryExpression->getOperand()));
     return Evaluator::unaryExpressionEvaluator<std::any>(
         unaryExpression->getOperator(), operand_any);
   }
   case BinderKindUtils::BoundNodeKind::VariableExpression: {
-    BoundVariableExpression *variableExpression =
-        (BoundVariableExpression *)node;
+    std::shared_ptr<BoundVariableExpression> variableExpression =
+        std::dynamic_pointer_cast<BoundVariableExpression>(node);
 
     std::any variable =
         this->evaluate<std::any>(variableExpression->getIdentifierExpression());
@@ -210,8 +220,8 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
   }
 
   case BinderKindUtils::BoundNodeKind::AssignmentExpression: {
-    BoundAssignmentExpression *assignmentExpression =
-        (BoundAssignmentExpression *)node;
+    std::shared_ptr<BoundAssignmentExpression> assignmentExpression =
+        std::dynamic_pointer_cast<BoundAssignmentExpression>(node);
 
     std::any variable =
         this->evaluate<std::any>(assignmentExpression->getLeft());
@@ -238,7 +248,8 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
     return this->root->variables[variable_name].value;
   }
   case BinderKindUtils::BoundNodeKind::BinaryExpression: {
-    BoundBinaryExpression *binaryExpression = (BoundBinaryExpression *)node;
+    std::shared_ptr<BoundBinaryExpression> binaryExpression =
+        std::dynamic_pointer_cast<BoundBinaryExpression>(node);
     std::any left_any = (this->evaluate<std::any>(binaryExpression->getLeft()));
     std::any right_any =
         (this->evaluate<std::any>(binaryExpression->getRight()));
@@ -252,12 +263,13 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
     }
   }
   case BinderKindUtils::BoundNodeKind::ParenthesizedExpression: {
-    BoundParenthesizedExpression *parenthesizedExpression =
-        (BoundParenthesizedExpression *)node;
+    std::shared_ptr<BoundParenthesizedExpression> parenthesizedExpression =
+        std::dynamic_pointer_cast<BoundParenthesizedExpression>(node);
     return this->evaluate<T>(parenthesizedExpression->getExpression());
   }
   case BinderKindUtils::BoundNodeKind::CallExpression: {
-    BoundCallExpression *callExpression = (BoundCallExpression *)node;
+    std::shared_ptr<BoundCallExpression> callExpression =
+        std::dynamic_pointer_cast<BoundCallExpression>(node);
 
     Utils::FunctionSymbol function = callExpression->getFunctionSymbol();
 
@@ -290,8 +302,9 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
         return nullptr;
       } else if (arguments_size == 1) {
 
-        std::any value = (this->evaluate<std::any>(
-            (BoundExpression *)callExpression->getArguments()[0]));
+        std::any value =
+            (this->evaluate<std::any>((std::shared_ptr<BoundExpression>)
+                                          callExpression->getArguments()[0]));
 
         try {
           std::cout << Utils::convertAnyToString(value);
@@ -307,8 +320,9 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
       return nullptr;
     } else if (function.name == Utils::BuiltInFunctions::String.name) {
       if (arguments_size == 1) {
-        std::any value = (this->evaluate<std::any>(
-            (BoundExpression *)callExpression->getArguments()[0]));
+        std::any value =
+            (this->evaluate<std::any>((std::shared_ptr<BoundExpression>)
+                                          callExpression->getArguments()[0]));
         if (value.type() == typeid(std::string)) {
           return std::any_cast<std::string>(value);
         } else if (value.type() == typeid(int)) {
@@ -329,8 +343,9 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
       }
     } else if (function.name == Utils::BuiltInFunctions::Int32.name) {
       if (arguments_size == 1) {
-        std::any value = (this->evaluate<std::any>(
-            (BoundExpression *)callExpression->getArguments()[0]));
+        std::any value =
+            (this->evaluate<std::any>((std::shared_ptr<BoundExpression>)
+                                          callExpression->getArguments()[0]));
         if (value.type() == typeid(std::string)) {
           return std::stoi(std::any_cast<std::string>(value));
         } else if (value.type() == typeid(int)) {
@@ -351,8 +366,9 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
       }
     } else if (function.name == Utils::BuiltInFunctions::Double.name) {
       if (arguments_size == 1) {
-        std::any value = (this->evaluate<std::any>(
-            (BoundExpression *)callExpression->getArguments()[0]));
+        std::any value =
+            (this->evaluate<std::any>((std::shared_ptr<BoundExpression>)
+                                          callExpression->getArguments()[0]));
         if (value.type() == typeid(std::string)) {
           return std::stod(std::any_cast<std::string>(value));
         } else if (value.type() == typeid(int)) {
@@ -373,8 +389,9 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
       }
     } else if (function.name == Utils::BuiltInFunctions::Bool.name) {
       if (arguments_size == 1) {
-        std::any value = (this->evaluate<std::any>(
-            (BoundExpression *)callExpression->getArguments()[0]));
+        std::any value =
+            (this->evaluate<std::any>((std::shared_ptr<BoundExpression>)
+                                          callExpression->getArguments()[0]));
         if (value.type() == typeid(std::string)) {
           bool is = std::any_cast<std::string>(value) == "false" ||
                     std::any_cast<std::string>(value) == "0";
@@ -397,7 +414,8 @@ template <typename T> T Evaluator::evaluate(BoundExpression *node) {
       }
     } else {
       // std::vector<std::any> arguments;
-      // for (BoundExpression *argument : callExpression->getArguments()) {
+      // for (std::shared_ptr< BoundExpression >argument :
+      // callExpression->getArguments()) {
       //   arguments.push_back(this->evaluate<std::any>(argument));
       // }
       // return function.call(arguments);

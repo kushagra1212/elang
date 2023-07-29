@@ -1,8 +1,9 @@
 #include "BoundIfStatement.h"
 
-BoundIfStatement::BoundIfStatement(BoundExpression *condition,
-                                   BoundStatement *thenStatement,
-                                   BoundStatement *elseStatement)
+BoundIfStatement::BoundIfStatement(
+    std::shared_ptr<BoundExpression> condition,
+    std::shared_ptr<BoundStatement> thenStatement,
+    std::shared_ptr<BoundStatement> elseStatement)
     : _condition(condition), _thenStatement(thenStatement),
       _elseStatement(elseStatement) {}
 
@@ -11,12 +12,14 @@ BinderKindUtils::BoundNodeKind BoundIfStatement::getKind() {
   return BinderKindUtils::BoundNodeKind::IfStatement;
 }
 
-BoundExpression *BoundIfStatement::getCondition() const { return _condition; }
+std::shared_ptr<BoundExpression> BoundIfStatement::getCondition() const {
+  return _condition;
+}
 
-BoundStatement *BoundIfStatement::getThenStatement() const {
+std::shared_ptr<BoundStatement> BoundIfStatement::getThenStatement() const {
   return _thenStatement;
 }
 
-BoundStatement *BoundIfStatement::getElseStatement() const {
+std::shared_ptr<BoundStatement> BoundIfStatement::getElseStatement() const {
   return _elseStatement;
 }

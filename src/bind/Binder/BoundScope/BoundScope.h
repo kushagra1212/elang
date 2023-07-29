@@ -4,9 +4,9 @@
 class BoundScope {
 public:
   std::map<std::string, struct Utils::Variable> variables;
-  BoundScope *parent;
+  std::shared_ptr<BoundScope> parent;
 
-  BoundScope(BoundScope *parent);
+  BoundScope(std::shared_ptr<BoundScope> parent);
 
 public:
   bool tryDeclareVariable(std::string name,

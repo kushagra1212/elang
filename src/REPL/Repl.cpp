@@ -63,7 +63,7 @@ void Repl::compileAndEvaluate(
           ? std::make_shared<Evaluator>(nullptr, (compilationUnit))
           : std::make_shared<Evaluator>((previousEvaluator), (compilationUnit));
 
-  BoundScopeGlobal *globalScope = currentEvaluator->getRoot();
+  std::shared_ptr<BoundScopeGlobal> globalScope = currentEvaluator->getRoot();
   compilationUnit->logs.insert(compilationUnit->logs.end(),
                                globalScope->logs.begin(),
                                globalScope->logs.end());

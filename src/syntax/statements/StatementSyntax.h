@@ -5,5 +5,5 @@ public:
   virtual SyntaxKindUtils::SyntaxKind getKind() = 0;
 
 public:
-  virtual std::vector<SyntaxNode *> getChildren() = 0;
+  virtual std::vector<std::shared_ptr<SyntaxNode>> getChildren() = 0;
 };

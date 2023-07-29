@@ -1,7 +1,8 @@
 #include "BoundWhileStatement.h"
 
-BoundWhileStatement::BoundWhileStatement(BoundExpression *condition,
-                                         BoundStatement *body)
+BoundWhileStatement::BoundWhileStatement(
+    std::shared_ptr<BoundExpression> condition,
+    std::shared_ptr<BoundStatement> body)
     : _condition(condition), _body(body) {}
 
 BinderKindUtils::BoundNodeKind BoundWhileStatement::getKind() {
@@ -9,8 +10,10 @@ BinderKindUtils::BoundNodeKind BoundWhileStatement::getKind() {
   return BinderKindUtils::BoundNodeKind::WhileStatement;
 }
 
-BoundExpression *BoundWhileStatement::getCondition() const {
+std::shared_ptr<BoundExpression> BoundWhileStatement::getCondition() const {
   return _condition;
 }
 
-BoundStatement *BoundWhileStatement::getBody() const { return _body; }
+std::shared_ptr<BoundStatement> BoundWhileStatement::getBody() const {
+  return _body;
+}

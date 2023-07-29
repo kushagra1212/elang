@@ -1,8 +1,8 @@
 #include "BoundVariableDeclaration.h"
 
-BoundVariableDeclaration::BoundVariableDeclaration(std::string variable,
-                                                   bool isConst,
-                                                   BoundExpression *initializer)
+BoundVariableDeclaration::BoundVariableDeclaration(
+    std::string variable, bool isConst,
+    std::shared_ptr<BoundExpression> initializer)
     : _variable(variable), _initializer(initializer), _isConst(isConst) {}
 
 BinderKindUtils::BoundNodeKind BoundVariableDeclaration::getKind() {
@@ -11,7 +11,8 @@ BinderKindUtils::BoundNodeKind BoundVariableDeclaration::getKind() {
 
 std::string BoundVariableDeclaration::getVariable() const { return _variable; }
 
-BoundExpression *BoundVariableDeclaration::getInitializer() const {
+std::shared_ptr<BoundExpression>
+BoundVariableDeclaration::getInitializer() const {
   return _initializer;
 }
 

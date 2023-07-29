@@ -5,13 +5,14 @@
 #include "../../BoundStatement/BoundStatement.h"
 class BoundScopeGlobal {
 public:
-  BoundScopeGlobal(BoundScopeGlobal *previous,
+  BoundScopeGlobal(std::shared_ptr<BoundScopeGlobal> previous,
                    std::map<std::string, Utils::Variable> variables,
-                   std::vector<std::string> logs, BoundStatement *statement);
+                   std::vector<std::string> logs,
+                   std::shared_ptr<BoundStatement> statement);
 
 public:
-  BoundScopeGlobal *previous;
+  std::shared_ptr<BoundScopeGlobal> previous;
   std::map<std::string, Utils::Variable> variables;
   std::vector<std::string> logs;
-  BoundStatement *statement;
+  std::shared_ptr<BoundStatement> statement;
 };

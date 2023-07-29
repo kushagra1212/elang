@@ -46,25 +46,25 @@ public:
   std::shared_ptr<CompilationUnitSyntax> parseCompilationUnit();
 
 private:
-  StatementSyntax *parseStatement();
-  BlockStatementSyntax *parseBlockStatement();
+  std::shared_ptr<StatementSyntax> parseStatement();
+  std::shared_ptr<BlockStatementSyntax> parseBlockStatement();
 
-  ExpressionStatementSyntax *parseExpressionStatement();
+  std::shared_ptr<ExpressionStatementSyntax> parseExpressionStatement();
 
-  StatementSyntax *parseVariableDeclaration();
+  std::shared_ptr<StatementSyntax> parseVariableDeclaration();
 
-  IfStatementSyntax *parseIfStatement();
+  std::shared_ptr<IfStatementSyntax> parseIfStatement();
 
-  WhileStatementSyntax *parseWhileStatement();
+  std::shared_ptr<WhileStatementSyntax> parseWhileStatement();
 
-  ForStatementSyntax *parseForStatement();
+  std::shared_ptr<ForStatementSyntax> parseForStatement();
 
-  ExpressionSyntax *parseNameorCallExpression();
-
-private:
-  ExpressionSyntax *parseExpression(int parentPrecedence = 0);
+  std::shared_ptr<ExpressionSyntax> parseNameorCallExpression();
 
 private:
-  ExpressionSyntax *parsePrimaryExpression();
+  std::shared_ptr<ExpressionSyntax> parseExpression(int parentPrecedence = 0);
+
+private:
+  std::shared_ptr<ExpressionSyntax> parsePrimaryExpression();
 };
 #endif

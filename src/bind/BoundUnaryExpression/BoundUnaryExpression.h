@@ -1,15 +1,15 @@
 #pragma once
+#include "../../Common.h"
 #include "../BinderKindUtils.h"
 #include "../BoundExpression.h"
-
 class BoundUnaryExpression : public BoundExpression {
 private:
   BinderKindUtils::BoundUnaryOperatorKind op;
-  BoundExpression *operand;
+  std::shared_ptr<BoundExpression> operand;
 
 public:
   BoundUnaryExpression(BinderKindUtils::BoundUnaryOperatorKind op,
-                       BoundExpression *operand);
+                       std::shared_ptr<BoundExpression> operand);
 
 public:
   BinderKindUtils::BoundNodeKind getKind();
@@ -21,5 +21,5 @@ public:
   BinderKindUtils::BoundUnaryOperatorKind getOperator();
 
 public:
-  BoundExpression *getOperand();
+  std::shared_ptr<BoundExpression> getOperand();
 };

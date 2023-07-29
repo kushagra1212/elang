@@ -2,14 +2,11 @@
 
 ParenthesizedExpressionSyntax::ParenthesizedExpressionSyntax(
     std::shared_ptr<SyntaxToken<std::any>> openParenthesisToken,
-    ExpressionSyntax *expression,
+    std::shared_ptr<ExpressionSyntax> expression,
     std::shared_ptr<SyntaxToken<std::any>> closeParenthesisToken) {
   this->openParenthesisToken = (openParenthesisToken);
   this->expression = expression;
   this->closeParenthesisToken = (closeParenthesisToken);
-  children.push_back(new SyntaxToken<std::any>(*this->openParenthesisToken));
-  children.push_back(this->expression);
-  children.push_back(new SyntaxToken<std::any>(*this->closeParenthesisToken));
 }
 
 SyntaxKindUtils::SyntaxKind ParenthesizedExpressionSyntax::getKind() {
@@ -21,7 +18,8 @@ ParenthesizedExpressionSyntax::getOpenParenthesisToken() {
   return (this->openParenthesisToken);
 }
 
-ExpressionSyntax *ParenthesizedExpressionSyntax::getExpression() {
+std::shared_ptr<ExpressionSyntax>
+ParenthesizedExpressionSyntax::getExpression() {
   return this->expression;
 }
 
@@ -30,6 +28,12 @@ ParenthesizedExpressionSyntax::getCloseParenthesisToken() {
   return (this->closeParenthesisToken);
 }
 
-std::vector<SyntaxNode *> ParenthesizedExpressionSyntax::getChildren() {
+std::vector<std::shared_ptr<SyntaxNode>>
+ParenthesizedExpressionSyntax::getChildren() {
+
+  std::vector<std::shared_ptr<SyntaxNode>> children;
+  children.push_back(this->openParenthesisToken);
+  children.push_back(this->expression);
+  children.push_back(this->closeParenthesisToken);
   return children;
 }

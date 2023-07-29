@@ -1,7 +1,8 @@
 #include "BoundUnaryExpression.h"
 
 BoundUnaryExpression::BoundUnaryExpression(
-    BinderKindUtils::BoundUnaryOperatorKind op, BoundExpression *operand) {
+    BinderKindUtils::BoundUnaryOperatorKind op,
+    std::shared_ptr<BoundExpression> operand) {
   this->op = op;
   this->operand = operand;
 }
@@ -18,4 +19,6 @@ BinderKindUtils::BoundUnaryOperatorKind BoundUnaryExpression::getOperator() {
   return op;
 }
 
-BoundExpression *BoundUnaryExpression::getOperand() { return operand; }
+std::shared_ptr<BoundExpression> BoundUnaryExpression::getOperand() {
+  return operand;
+}

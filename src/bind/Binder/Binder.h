@@ -41,22 +41,25 @@ private:
   std::vector<std::string> logs;
 
 private:
-  BoundScope *root;
+  std::shared_ptr<BoundScope> root;
 
 public:
-  Binder(BoundScope *root);
+  Binder(std::shared_ptr<BoundScope> root);
 
 public:
-  BoundExpression *bindExpression(ExpressionSyntax *syntax);
+  std::shared_ptr<BoundExpression>
+  bindExpression(std::shared_ptr<ExpressionSyntax> syntax);
 
 public:
-  static BoundScopeGlobal *
-  bindGlobalScope(BoundScopeGlobal *previous,
+  static std::shared_ptr<BoundScopeGlobal>
+  bindGlobalScope(std::shared_ptr<BoundScopeGlobal> previous,
                   std::shared_ptr<CompilationUnitSyntax> syntax);
 
 public:
-  static BoundScope *CreateParentScope(BoundScopeGlobal *parent);
+  static std::shared_ptr<BoundScope>
+  CreateParentScope(std::shared_ptr<BoundScopeGlobal> parent);
 
 public:
-  BoundStatement *bindStatement(StatementSyntax *syntax);
+  std::shared_ptr<BoundStatement>
+  bindStatement(std::shared_ptr<StatementSyntax> syntax);
 };

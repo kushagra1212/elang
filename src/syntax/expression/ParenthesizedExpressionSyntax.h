@@ -5,15 +5,13 @@
 class ParenthesizedExpressionSyntax : public ExpressionSyntax {
 private:
   std::shared_ptr<SyntaxToken<std::any>> openParenthesisToken;
-  ExpressionSyntax *expression;
+  std::shared_ptr<ExpressionSyntax> expression;
   std::shared_ptr<SyntaxToken<std::any>> closeParenthesisToken;
 
 public:
-  std::vector<SyntaxNode *> children;
-
   ParenthesizedExpressionSyntax(
       std::shared_ptr<SyntaxToken<std::any>> openParenthesisToken,
-      ExpressionSyntax *expression,
+      std::shared_ptr<ExpressionSyntax> expression,
       std::shared_ptr<SyntaxToken<std::any>> closeParenthesisToken);
 
 public:
@@ -23,12 +21,12 @@ public:
   std::shared_ptr<SyntaxToken<std::any>> getOpenParenthesisToken();
 
 public:
-  ExpressionSyntax *getExpression();
+  std::shared_ptr<ExpressionSyntax> getExpression();
 
 public:
   std::shared_ptr<SyntaxToken<std::any>> getCloseParenthesisToken();
 
 public:
-  std::vector<SyntaxNode *> getChildren();
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren();
 };
 #endif

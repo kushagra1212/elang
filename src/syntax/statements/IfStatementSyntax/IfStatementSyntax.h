@@ -8,21 +8,21 @@
 class IfStatementSyntax : public StatementSyntax {
 public:
   IfStatementSyntax(std::shared_ptr<SyntaxToken<std::any>> ifKeyword,
-                    ExpressionSyntax *condition,
-                    BlockStatementSyntax *statement,
-                    ElseClauseSyntax *elseClause);
+                    std::shared_ptr<ExpressionSyntax> condition,
+                    std::shared_ptr<BlockStatementSyntax> statement,
+                    std::shared_ptr<ElseClauseSyntax> elseClause);
 
   std::shared_ptr<SyntaxToken<std::any>> getIfKeyword();
-  ExpressionSyntax *getCondition() const;
-  BlockStatementSyntax *getStatement() const;
-  ElseClauseSyntax *getElseClause() const;
+  std::shared_ptr<ExpressionSyntax> getCondition() const;
+  std::shared_ptr<BlockStatementSyntax> getStatement() const;
+  std::shared_ptr<ElseClauseSyntax> getElseClause() const;
 
   SyntaxKindUtils::SyntaxKind getKind() override;
-  std::vector<SyntaxNode *> getChildren() override;
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren() override;
 
 private:
   std::shared_ptr<SyntaxToken<std::any>> ifKeyword;
-  ExpressionSyntax *condition;
-  BlockStatementSyntax *statement;
-  ElseClauseSyntax *elseClause;
+  std::shared_ptr<ExpressionSyntax> condition;
+  std::shared_ptr<BlockStatementSyntax> statement;
+  std::shared_ptr<ElseClauseSyntax> elseClause;
 };

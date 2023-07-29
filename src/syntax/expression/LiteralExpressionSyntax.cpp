@@ -25,10 +25,10 @@ std::shared_ptr<SyntaxToken<std::any>> LiteralExpressionSyntax<T>::getToken() {
   return (this->token);
 }
 template <typename T>
-std::vector<SyntaxNode *> LiteralExpressionSyntax<T>::getChildren() {
+std::vector<std::shared_ptr<SyntaxNode>>
+LiteralExpressionSyntax<T>::getChildren() {
 
-  std::vector<SyntaxNode *> children = {
-      new SyntaxToken<std::any>(*this->token)};
+  std::vector<std::shared_ptr<SyntaxNode>> children = {this->token};
   return children;
 }
 template <typename T> T LiteralExpressionSyntax<T>::getValue() {

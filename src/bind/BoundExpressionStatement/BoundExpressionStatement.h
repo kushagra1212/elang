@@ -7,14 +7,14 @@
 class BoundExpressionStatement : public BoundStatement {
 
 private:
-  BoundExpression *expression;
+  std::shared_ptr<BoundExpression> expression;
 
 public:
-  BoundExpressionStatement(BoundExpression *expression);
+  BoundExpressionStatement(std::shared_ptr<BoundExpression> expression);
 
 public:
   BinderKindUtils::BoundNodeKind getKind();
 
 public:
-  BoundExpression *getExpression();
+  std::shared_ptr<BoundExpression> getExpression();
 };

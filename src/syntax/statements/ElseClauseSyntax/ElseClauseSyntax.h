@@ -7,13 +7,13 @@
 class ElseClauseSyntax : public SyntaxNode {
 private:
   std::shared_ptr<SyntaxToken<std::any>> elseKeyword;
-  BlockStatementSyntax *statement;
+  std::shared_ptr<BlockStatementSyntax> statement;
 
 public:
   ElseClauseSyntax(std::shared_ptr<SyntaxToken<std::any>> elseKeyword,
-                   BlockStatementSyntax *statement);
+                   std::shared_ptr<BlockStatementSyntax> statement);
   std::shared_ptr<SyntaxToken<std::any>> getElseKeyword();
-  BlockStatementSyntax *getStatement() const;
+  std::shared_ptr<BlockStatementSyntax> getStatement() const;
   SyntaxKindUtils::SyntaxKind getKind() override;
-  std::vector<SyntaxNode *> getChildren() override;
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren() override;
 };

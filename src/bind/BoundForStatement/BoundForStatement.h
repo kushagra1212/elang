@@ -10,24 +10,25 @@
 class BoundForStatement : public BoundStatement {
 
 public:
-  BoundForStatement(BoundStatement *initialization, BoundExpression *upperBound,
+  BoundForStatement(std::shared_ptr<BoundStatement> initialization,
+                    std::shared_ptr<BoundExpression> upperBound,
 
-                    BoundStatement *statement);
+                    std::shared_ptr<BoundStatement> statement);
 
-  BoundStatement *getInitialization() const;
+  std::shared_ptr<BoundStatement> getInitialization() const;
 
-  BoundStatement *getStatement() const;
+  std::shared_ptr<BoundStatement> getStatement() const;
 
-  BoundExpression *getUpperBound() const;
+  std::shared_ptr<BoundExpression> getUpperBound() const;
 
   BinderKindUtils::BoundNodeKind getKind() override;
 
 private:
-  BoundStatement *initialization;
+  std::shared_ptr<BoundStatement> initialization;
 
-  BoundStatement *statement;
+  std::shared_ptr<BoundStatement> statement;
 
-  BoundExpression *upperBound;
+  std::shared_ptr<BoundExpression> upperBound;
 };
 
 #endif // BOUND_FOR_STATEMENT_H

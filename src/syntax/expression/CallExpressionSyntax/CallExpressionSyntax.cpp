@@ -1,9 +1,9 @@
 #include "CallExpressionSyntax.h"
 
 CallExpressionSyntax::CallExpressionSyntax(
-    ExpressionSyntax *identifier,
+    std::shared_ptr<ExpressionSyntax> identifier,
     std::shared_ptr<SyntaxToken<std::any>> openParenthesisToken,
-    std::vector<ExpressionSyntax *> arguments,
+    std::vector<std::shared_ptr<ExpressionSyntax>> arguments,
     std::shared_ptr<SyntaxToken<std::any>> closeParenthesisToken) {
   this->identifier = identifier;
   this->openParenthesisToken = (openParenthesisToken);
@@ -11,7 +11,7 @@ CallExpressionSyntax::CallExpressionSyntax(
   this->closeParenthesisToken = (closeParenthesisToken);
 }
 
-ExpressionSyntax *CallExpressionSyntax::getIdentifier() const {
+std::shared_ptr<ExpressionSyntax> CallExpressionSyntax::getIdentifier() const {
   return identifier;
 }
 
@@ -20,7 +20,8 @@ CallExpressionSyntax::getOpenParenthesisToken() {
   return (openParenthesisToken);
 }
 
-std::vector<ExpressionSyntax *> CallExpressionSyntax::getArguments() const {
+std::vector<std::shared_ptr<ExpressionSyntax>>
+CallExpressionSyntax::getArguments() const {
   return arguments;
 }
 
@@ -33,13 +34,13 @@ SyntaxKindUtils::SyntaxKind CallExpressionSyntax::getKind() {
   return SyntaxKindUtils::CallExpression;
 }
 
-std::vector<SyntaxNode *> CallExpressionSyntax::getChildren() {
-  std::vector<SyntaxNode *> children;
+std::vector<std::shared_ptr<SyntaxNode>> CallExpressionSyntax::getChildren() {
+  std::vector<std::shared_ptr<SyntaxNode>> children;
   children.push_back(identifier);
-  children.push_back(new SyntaxToken<std::any>(*openParenthesisToken));
+  children.push_back(openParenthesisToken);
   for (auto &argument : arguments) {
     children.push_back(argument);
   }
-  children.push_back(new SyntaxToken<std::any>(*closeParenthesisToken));
+  children.push_back(closeParenthesisToken);
   return children;
 }

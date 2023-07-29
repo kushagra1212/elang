@@ -24,7 +24,7 @@ public:
   std::shared_ptr<SyntaxToken<std::any>> getToken();
 
 public:
-  std::vector<SyntaxNode *> getChildren();
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren();
 
 public:
   T getValue();

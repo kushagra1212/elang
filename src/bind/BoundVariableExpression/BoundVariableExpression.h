@@ -3,10 +3,10 @@
 #include "../BoundExpression.h"
 class BoundVariableExpression : public BoundExpression {
 private:
-  BoundExpression *identiferExpression;
+  std::shared_ptr<BoundExpression> identiferExpression;
 
 public:
-  BoundVariableExpression(BoundExpression *identiferExpression);
+  BoundVariableExpression(std::shared_ptr<BoundExpression> identiferExpression);
 
 public:
   BinderKindUtils::BoundNodeKind getKind();
@@ -15,5 +15,5 @@ public:
   const std::type_info &getType();
 
 public:
-  BoundExpression *getIdentifierExpression();
+  std::shared_ptr<BoundExpression> getIdentifierExpression();
 };

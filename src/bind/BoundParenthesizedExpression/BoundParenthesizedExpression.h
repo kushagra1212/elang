@@ -5,10 +5,10 @@
 
 class BoundParenthesizedExpression : public BoundExpression {
 private:
-  BoundExpression *expression;
+  std::shared_ptr<BoundExpression> expression;
 
 public:
-  BoundParenthesizedExpression(BoundExpression *expression);
+  BoundParenthesizedExpression(std::shared_ptr<BoundExpression> expression);
 
 public:
 public:
@@ -18,5 +18,5 @@ public:
   const std::type_info &getType();
 
 public:
-  BoundExpression *getExpression();
+  std::shared_ptr<BoundExpression> getExpression();
 };

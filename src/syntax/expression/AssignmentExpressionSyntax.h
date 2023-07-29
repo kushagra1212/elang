@@ -4,28 +4,28 @@
 #include "ExpressionSyntax.h"
 class AssignmentExpressionSyntax : public ExpressionSyntax {
 private:
-  ExpressionSyntax *left;
+  std::shared_ptr<ExpressionSyntax> left;
   std::shared_ptr<SyntaxToken<std::any>> operatorToken;
-  ExpressionSyntax *right;
+  std::shared_ptr<ExpressionSyntax> right;
 
 public:
   AssignmentExpressionSyntax(
-      ExpressionSyntax *left,
+      std::shared_ptr<ExpressionSyntax> left,
       std::shared_ptr<SyntaxToken<std::any>> operatorToken,
-      ExpressionSyntax *right);
+      std::shared_ptr<ExpressionSyntax> right);
 
 public:
   SyntaxKindUtils::SyntaxKind getKind();
 
 public:
-  std::vector<SyntaxNode *> getChildren();
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren();
 
 public:
   std::shared_ptr<SyntaxToken<std::any>> getOperatorToken();
 
 public:
-  ExpressionSyntax *getRight();
+  std::shared_ptr<ExpressionSyntax> getRight();
 
 public:
-  ExpressionSyntax *getLeft();
+  std::shared_ptr<ExpressionSyntax> getLeft();
 };

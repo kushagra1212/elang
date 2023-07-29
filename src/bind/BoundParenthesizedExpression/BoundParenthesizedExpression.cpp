@@ -1,7 +1,7 @@
 #include "BoundParenthesizedExpression.h"
 
 BoundParenthesizedExpression::BoundParenthesizedExpression(
-    BoundExpression *expression) {
+    std::shared_ptr<BoundExpression> expression) {
   this->expression = expression;
 }
 
@@ -13,6 +13,6 @@ const std::type_info &BoundParenthesizedExpression::getType() {
   return expression->getType();
 }
 
-BoundExpression *BoundParenthesizedExpression::getExpression() {
+std::shared_ptr<BoundExpression> BoundParenthesizedExpression::getExpression() {
   return expression;
 }

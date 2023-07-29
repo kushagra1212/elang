@@ -5,20 +5,20 @@
 #include "statements/StatementSyntax.h"
 class CompilationUnitSyntax {
 private:
-  StatementSyntax *statement;
+  std::shared_ptr<StatementSyntax> statement;
   std::shared_ptr<SyntaxToken<std::any>> endOfFileToken;
 
 public:
   std::vector<std::string> logs;
   CompilationUnitSyntax(std::vector<std::string> &logs,
-                        StatementSyntax *statement,
+                        std::shared_ptr<StatementSyntax> statement,
                         std::shared_ptr<SyntaxToken<std::any>> endOfFileToken);
 
 public:
   SyntaxKindUtils::SyntaxKind getKind();
 
 public:
-  StatementSyntax *getStatement();
+  std::shared_ptr<StatementSyntax> getStatement();
 
 public:
   std::shared_ptr<SyntaxToken<std::any>> getEndOfFileToken();

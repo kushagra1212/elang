@@ -2,12 +2,10 @@
 
 UnaryExpressionSyntax::UnaryExpressionSyntax(
     std::shared_ptr<SyntaxToken<std::any>> operatorToken,
-    ExpressionSyntax *operand) {
+    std::shared_ptr<ExpressionSyntax> operand) {
 
   this->operatorToken = (operatorToken);
   this->operand = operand;
-  children.push_back(new SyntaxToken<std::any>(*this->operatorToken));
-  children.push_back(this->operand);
 }
 
 SyntaxKindUtils::SyntaxKind UnaryExpressionSyntax::getKind() {
@@ -16,11 +14,18 @@ SyntaxKindUtils::SyntaxKind UnaryExpressionSyntax::getKind() {
 
 std::shared_ptr<SyntaxToken<std::any>>
 UnaryExpressionSyntax::getOperatorToken() {
+
   return (this->operatorToken);
 }
 
-ExpressionSyntax *UnaryExpressionSyntax::getOperand() { return this->operand; }
+std::shared_ptr<ExpressionSyntax> UnaryExpressionSyntax::getOperand() {
+  return this->operand;
+}
 
-std::vector<SyntaxNode *> UnaryExpressionSyntax::getChildren() {
+std::vector<std::shared_ptr<SyntaxNode>> UnaryExpressionSyntax::getChildren() {
+  std::vector<std::shared_ptr<SyntaxNode>> children;
+  children.push_back(
+      std::dynamic_pointer_cast<SyntaxNode>(this->operatorToken));
+  children.push_back(std::dynamic_pointer_cast<SyntaxNode>(this->operand));
   return children;
 }

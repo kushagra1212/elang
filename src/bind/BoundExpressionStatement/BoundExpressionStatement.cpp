@@ -1,7 +1,7 @@
 #include "BoundExpressionStatement.h"
 
 BoundExpressionStatement::BoundExpressionStatement(
-    BoundExpression *expression) {
+    std::shared_ptr<BoundExpression> expression) {
   this->expression = expression;
 }
 
@@ -9,6 +9,6 @@ BinderKindUtils::BoundNodeKind BoundExpressionStatement::getKind() {
   return BinderKindUtils::BoundNodeKind::ExpressionStatement;
 }
 
-BoundExpression *BoundExpressionStatement::getExpression() {
+std::shared_ptr<BoundExpression> BoundExpressionStatement::getExpression() {
   return expression;
 }

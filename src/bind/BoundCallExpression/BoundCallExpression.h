@@ -8,11 +8,12 @@
 
 class BoundCallExpression : public BoundExpression {
 public:
-  BoundCallExpression(Utils::FunctionSymbol functionalSymbol,
-                      const std::vector<BoundExpression *> &arguments);
+  BoundCallExpression(
+      Utils::FunctionSymbol functionalSymbol,
+      const std::vector<std::shared_ptr<BoundExpression>> &arguments);
 
   const std::string &getName() const;
-  const std::vector<BoundExpression *> &getArguments() const;
+  const std::vector<std::shared_ptr<BoundExpression>> &getArguments() const;
 
   BinderKindUtils::BoundNodeKind getKind();
 
@@ -22,7 +23,7 @@ public:
 
 private:
   Utils::FunctionSymbol functionalSymbol;
-  std::vector<BoundExpression *> arguments;
+  std::vector<std::shared_ptr<BoundExpression>> arguments;
 };
 
 #endif // __BOUND_CALL_EXPRESSION_H__

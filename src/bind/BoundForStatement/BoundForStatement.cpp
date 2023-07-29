@@ -1,18 +1,19 @@
 #include "BoundForStatement.h"
 
-BoundForStatement::BoundForStatement(BoundStatement *initialization,
+BoundForStatement::BoundForStatement(
+    std::shared_ptr<BoundStatement> initialization,
 
-                                     BoundExpression *upperBound,
-                                     BoundStatement *statement)
+    std::shared_ptr<BoundExpression> upperBound,
+    std::shared_ptr<BoundStatement> statement)
     : initialization((initialization)), upperBound(upperBound),
       statement((statement)) {}
 
-BoundStatement *BoundForStatement::getInitialization() const {
+std::shared_ptr<BoundStatement> BoundForStatement::getInitialization() const {
 
   return this->initialization;
 }
 
-BoundStatement *BoundForStatement::getStatement() const {
+std::shared_ptr<BoundStatement> BoundForStatement::getStatement() const {
 
   return this->statement;
 }
@@ -22,7 +23,7 @@ BinderKindUtils::BoundNodeKind BoundForStatement::getKind() {
   return BinderKindUtils::BoundNodeKind::ForStatement;
 }
 
-BoundExpression *BoundForStatement::getUpperBound() const {
+std::shared_ptr<BoundExpression> BoundForStatement::getUpperBound() const {
 
   return this->upperBound;
 }

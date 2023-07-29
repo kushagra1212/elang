@@ -6,20 +6,21 @@
 class WhileStatementSyntax : public StatementSyntax {
 private:
   std::shared_ptr<SyntaxToken<std::any>> _whileKeyword;
-  ExpressionSyntax *_condition;
-  BlockStatementSyntax *_body;
+  std::shared_ptr<ExpressionSyntax> _condition;
+  std::shared_ptr<BlockStatementSyntax> _body;
 
 public:
   WhileStatementSyntax(std::shared_ptr<SyntaxToken<std::any>> whileKeyword,
-                       ExpressionSyntax *condition, BlockStatementSyntax *body);
+                       std::shared_ptr<ExpressionSyntax> condition,
+                       std::shared_ptr<BlockStatementSyntax> body);
 
   SyntaxKindUtils::SyntaxKind getKind() override;
 
-  std::vector<SyntaxNode *> getChildren() override;
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren() override;
 
   std::shared_ptr<SyntaxToken<std::any>> getWhileKeyword();
 
-  ExpressionSyntax *getCondition() const;
+  std::shared_ptr<ExpressionSyntax> getCondition() const;
 
-  BlockStatementSyntax *getBody() const;
+  std::shared_ptr<BlockStatementSyntax> getBody() const;
 };

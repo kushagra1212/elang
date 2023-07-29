@@ -2,17 +2,18 @@
 #include "ExpressionSyntax.h"
 class VariableExpressionSyntax : public ExpressionSyntax {
 private:
-  ExpressionSyntax *identifierExpression;
+  std::shared_ptr<ExpressionSyntax> identifierExpression;
 
 public:
-  VariableExpressionSyntax(ExpressionSyntax *identifierExpression);
+  VariableExpressionSyntax(
+      std::shared_ptr<ExpressionSyntax> identifierExpression);
 
 public:
   SyntaxKindUtils::SyntaxKind getKind();
 
 public:
-  ExpressionSyntax *getIdentifier();
+  std::shared_ptr<ExpressionSyntax> getIdentifier();
 
 public:
-  std::vector<SyntaxNode *> getChildren();
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren();
 };

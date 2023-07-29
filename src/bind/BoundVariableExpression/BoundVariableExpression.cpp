@@ -1,7 +1,7 @@
 #include "BoundVariableExpression.h"
 
 BoundVariableExpression::BoundVariableExpression(
-    BoundExpression *identiferExpression) {
+    std::shared_ptr<BoundExpression> identiferExpression) {
   this->identiferExpression = identiferExpression;
 }
 
@@ -13,6 +13,7 @@ const std::type_info &BoundVariableExpression::getType() {
   return identiferExpression->getType();
 }
 
-BoundExpression *BoundVariableExpression::getIdentifierExpression() {
+std::shared_ptr<BoundExpression>
+BoundVariableExpression::getIdentifierExpression() {
   return this->identiferExpression;
 }

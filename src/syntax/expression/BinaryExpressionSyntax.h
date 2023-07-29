@@ -5,29 +5,28 @@
 class BinaryExpressionSyntax : public ExpressionSyntax {
 
 private:
-  ExpressionSyntax *left;
+  std::shared_ptr<ExpressionSyntax> left;
   std::shared_ptr<SyntaxToken<std::any>> operatorToken;
-  ExpressionSyntax *right;
+  std::shared_ptr<ExpressionSyntax> right;
 
 public:
-  std::vector<SyntaxNode *> children;
-  BinaryExpressionSyntax(ExpressionSyntax *left,
+  BinaryExpressionSyntax(std::shared_ptr<ExpressionSyntax> left,
                          std::shared_ptr<SyntaxToken<std::any>> operatorToken,
-                         ExpressionSyntax *right);
+                         std::shared_ptr<ExpressionSyntax> right);
 
 public:
   SyntaxKindUtils::SyntaxKind getKind();
 
 public:
-  ExpressionSyntax *getLeft();
+  std::shared_ptr<ExpressionSyntax> getLeft();
 
 public:
   std::shared_ptr<SyntaxToken<std::any>> getOperatorToken();
 
 public:
-  ExpressionSyntax *getRight();
+  std::shared_ptr<ExpressionSyntax> getRight();
 
 public:
-  std::vector<SyntaxNode *> getChildren();
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren();
 };
 #endif

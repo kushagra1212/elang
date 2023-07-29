@@ -1,4 +1,5 @@
 #pragma once
+#include "../Common.h"
 #include "BoundNode.h"
 class BoundExpression : public BoundNode {
 public:

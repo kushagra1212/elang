@@ -10,17 +10,17 @@ private:
   std::shared_ptr<SyntaxToken<std::any>> _keyword;
   std::shared_ptr<SyntaxToken<std::any>> _identifier;
   std::shared_ptr<SyntaxToken<std::any>> _equalsToken;
-  ExpressionSyntax *_initializer;
+  std::shared_ptr<ExpressionSyntax> _initializer;
 
 public:
   VariableDeclarationSyntax(std::shared_ptr<SyntaxToken<std::any>> keyword,
                             std::shared_ptr<SyntaxToken<std::any>> identifier,
                             std::shared_ptr<SyntaxToken<std::any>> equalsToken,
-                            ExpressionSyntax *initializer);
+                            std::shared_ptr<ExpressionSyntax> initializer);
   SyntaxKindUtils::SyntaxKind getKind() override;
-  std::vector<SyntaxNode *> getChildren() override;
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren() override;
   std::shared_ptr<SyntaxToken<std::any>> getIdentifier();
   std::shared_ptr<SyntaxToken<std::any>> getEqualsToken();
-  ExpressionSyntax *getInitializer() const;
+  std::shared_ptr<ExpressionSyntax> getInitializer() const;
   std::shared_ptr<SyntaxToken<std::any>> getKeyword();
 };

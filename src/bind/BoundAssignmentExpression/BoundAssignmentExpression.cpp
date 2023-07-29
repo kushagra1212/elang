@@ -1,8 +1,9 @@
 #include "BoundAssignmentExpression.h"
 
 BoundAssignmentExpression::BoundAssignmentExpression(
-    BoundExpression *left, BinderKindUtils::BoundBinaryOperatorKind op,
-    BoundExpression *right) {
+    std::shared_ptr<BoundExpression> left,
+    BinderKindUtils::BoundBinaryOperatorKind op,
+    std::shared_ptr<BoundExpression> right) {
   this->op = op;
   this->left = left;
   this->right = right;
@@ -21,6 +22,10 @@ BoundAssignmentExpression::getOperator() {
   return op;
 }
 
-BoundExpression *BoundAssignmentExpression::getLeft() { return left; }
+std::shared_ptr<BoundExpression> BoundAssignmentExpression::getLeft() {
+  return left;
+}
 
-BoundExpression *BoundAssignmentExpression::getRight() { return right; }
+std::shared_ptr<BoundExpression> BoundAssignmentExpression::getRight() {
+  return right;
+}

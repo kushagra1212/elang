@@ -1,6 +1,6 @@
 #include "BoundScope.h"
 
-BoundScope::BoundScope(BoundScope *parent) : parent(parent) {}
+BoundScope::BoundScope(std::shared_ptr<BoundScope> parent) : parent(parent) {}
 
 bool BoundScope::tryDeclareVariable(
     std::string name, const struct Utils::Variable &initialValue) {

@@ -2,7 +2,7 @@
 
 BoundCallExpression::BoundCallExpression(
     Utils::FunctionSymbol functionalSymbol,
-    const std::vector<BoundExpression *> &arguments) {
+    const std::vector<std::shared_ptr<BoundExpression>> &arguments) {
   this->functionalSymbol = functionalSymbol;
   this->arguments = arguments;
 }
@@ -15,7 +15,7 @@ Utils::FunctionSymbol BoundCallExpression::getFunctionSymbol() const {
   return functionalSymbol;
 }
 
-const std::vector<BoundExpression *> &
+const std::vector<std::shared_ptr<BoundExpression>> &
 BoundCallExpression::getArguments() const {
   return arguments;
 }

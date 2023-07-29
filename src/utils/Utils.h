@@ -5,7 +5,8 @@
 #include "../syntax/expression/LiteralExpressionSyntax.h"
 #include <typeinfo>
 namespace Utils {
-void prettyPrint(SyntaxNode *node, std::string indent = "", bool isLast = true);
+void prettyPrint(std::shared_ptr<SyntaxNode> node, std::string indent = "",
+                 bool isLast = true);
 std::string
 getLineNumberAndPosition(std::shared_ptr<SyntaxToken<std::any>> token);
 

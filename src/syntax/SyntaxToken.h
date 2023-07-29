@@ -47,7 +47,7 @@ public:
 
 public:
 public:
-  std::vector<SyntaxNode *> children;
-  std::vector<SyntaxNode *> getChildren();
+  std::vector<std::shared_ptr<SyntaxNode>> children;
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren();
 };
 #endif

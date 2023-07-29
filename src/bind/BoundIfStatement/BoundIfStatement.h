@@ -1,18 +1,20 @@
 #pragma once
+#include "../../Common.h"
 #include "../BinderKindUtils.h"
 #include "../BoundExpression.h"
 #include "../BoundStatement/BoundStatement.h"
 class BoundIfStatement : public BoundStatement {
 private:
-  BoundExpression *_condition;
-  BoundStatement *_thenStatement;
-  BoundStatement *_elseStatement;
+  std::shared_ptr<BoundExpression> _condition;
+  std::shared_ptr<BoundStatement> _thenStatement;
+  std::shared_ptr<BoundStatement> _elseStatement;
 
 public:
-  BoundIfStatement(BoundExpression *condition, BoundStatement *thenStatement,
-                   BoundStatement *elseStatement);
+  BoundIfStatement(std::shared_ptr<BoundExpression> condition,
+                   std::shared_ptr<BoundStatement> thenStatement,
+                   std::shared_ptr<BoundStatement> elseStatement);
   BinderKindUtils::BoundNodeKind getKind() override;
-  BoundExpression *getCondition() const;
-  BoundStatement *getThenStatement() const;
-  BoundStatement *getElseStatement() const;
+  std::shared_ptr<BoundExpression> getCondition() const;
+  std::shared_ptr<BoundStatement> getThenStatement() const;
+  std::shared_ptr<BoundStatement> getElseStatement() const;
 };

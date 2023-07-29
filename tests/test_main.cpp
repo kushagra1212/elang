@@ -10,7 +10,7 @@ protected:
   std::stringstream output_stream;
   std::streambuf *saved_cout_buf;
 
-  Repl *repl = nullptr;
+  std::shared_ptr<Repl> repl;
   void SetUp() override {
     // Redirect cout to the stringstream
 
@@ -27,7 +27,7 @@ protected:
   std::string getOutput() const { return output_stream.str(); }
 
   void runEvaluator() {
-    repl = new Repl();
+    repl = std::make_shared<Repl>();
 
     repl->runForTest(input_stream, output_stream);
   }

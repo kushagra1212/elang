@@ -22,7 +22,7 @@
 class Evaluator {
 
 private:
-  BoundScopeGlobal *root = nullptr;
+  std::shared_ptr<BoundScopeGlobal> root = nullptr;
 
 public:
   std::any last_value;
@@ -32,12 +32,12 @@ public:
             std::shared_ptr<CompilationUnitSyntax> compilation_unit);
 
 public:
-  BoundScopeGlobal *getRoot();
+  std::shared_ptr<BoundScopeGlobal> getRoot();
 
 public:
-  template <typename T> T evaluate(BoundExpression *node);
+  template <typename T> T evaluate(std::shared_ptr<BoundExpression> node);
 
-  void evaluateStatement(BoundStatement *node);
+  void evaluateStatement(std::shared_ptr<BoundStatement> node);
   static std::vector<std::string> logs;
   template <typename T>
   static T

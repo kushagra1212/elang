@@ -2,8 +2,9 @@
 
 IfStatementSyntax::IfStatementSyntax(
     std::shared_ptr<SyntaxToken<std::any>> ifKeyword,
-    ExpressionSyntax *condition, BlockStatementSyntax *statement,
-    ElseClauseSyntax *elseClause)
+    std::shared_ptr<ExpressionSyntax> condition,
+    std::shared_ptr<BlockStatementSyntax> statement,
+    std::shared_ptr<ElseClauseSyntax> elseClause)
     : ifKeyword((ifKeyword)), condition(condition), statement(statement),
       elseClause(elseClause) {}
 
@@ -11,13 +12,15 @@ std::shared_ptr<SyntaxToken<std::any>> IfStatementSyntax::getIfKeyword() {
   return (ifKeyword);
 }
 
-ExpressionSyntax *IfStatementSyntax::getCondition() const { return condition; }
+std::shared_ptr<ExpressionSyntax> IfStatementSyntax::getCondition() const {
+  return condition;
+}
 
-BlockStatementSyntax *IfStatementSyntax::getStatement() const {
+std::shared_ptr<BlockStatementSyntax> IfStatementSyntax::getStatement() const {
   return statement;
 }
 
-ElseClauseSyntax *IfStatementSyntax::getElseClause() const {
+std::shared_ptr<ElseClauseSyntax> IfStatementSyntax::getElseClause() const {
   return elseClause;
 }
 
@@ -25,9 +28,11 @@ SyntaxKindUtils::SyntaxKind IfStatementSyntax::getKind() {
   return SyntaxKindUtils::SyntaxKind::IfStatement;
 }
 
-std::vector<SyntaxNode *> IfStatementSyntax::getChildren() {
-  std::vector<SyntaxNode *> children = {new SyntaxToken<std::any>(*ifKeyword),
-                                        condition, (SyntaxNode *)statement};
+std::vector<std::shared_ptr<SyntaxNode>> IfStatementSyntax::getChildren() {
+  std::vector<std::shared_ptr<SyntaxNode>> children = {
+      std::dynamic_pointer_cast<SyntaxNode>(ifKeyword),
+      std::dynamic_pointer_cast<SyntaxNode>(condition),
+      std::dynamic_pointer_cast<SyntaxNode>(statement)};
   if (elseClause != nullptr) {
     children.push_back(elseClause);
   }

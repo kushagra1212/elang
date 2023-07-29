@@ -1,8 +1,9 @@
 #include "BoundBinaryExpression.h"
 
 BoundBinaryExpression::BoundBinaryExpression(
-    BoundExpression *left, BinderKindUtils::BoundBinaryOperatorKind op,
-    BoundExpression *right)
+    std::shared_ptr<BoundExpression> left,
+    BinderKindUtils::BoundBinaryOperatorKind op,
+    std::shared_ptr<BoundExpression> right)
     : op(op), left(left), right(right) {}
 
 BinderKindUtils::BoundNodeKind BoundBinaryExpression::getKind() {
@@ -17,6 +18,10 @@ BinderKindUtils::BoundBinaryOperatorKind BoundBinaryExpression::getOperator() {
   return op;
 }
 
-BoundExpression *BoundBinaryExpression::getLeft() { return left; }
+std::shared_ptr<BoundExpression> BoundBinaryExpression::getLeft() {
+  return left;
+}
 
-BoundExpression *BoundBinaryExpression::getRight() { return right; }
+std::shared_ptr<BoundExpression> BoundBinaryExpression::getRight() {
+  return right;
+}

@@ -8,15 +8,15 @@
 class BoundVariableDeclaration : public BoundStatement {
 private:
   std::string _variable;
-  BoundExpression *_initializer;
+  std::shared_ptr<BoundExpression> _initializer;
   bool _isConst;
 
 public:
   BoundVariableDeclaration(std::string variable, bool isConst,
-                           BoundExpression *initializer);
+                           std::shared_ptr<BoundExpression> initializer);
   BinderKindUtils::BoundNodeKind getKind() override;
   std::string getVariable() const;
-  BoundExpression *getInitializer() const;
+  std::shared_ptr<BoundExpression> getInitializer() const;
 
   bool isConst() const;
 };

@@ -7,24 +7,23 @@ class UnaryExpressionSyntax : public ExpressionSyntax {
 
 private:
   std::shared_ptr<SyntaxToken<std::any>> operatorToken;
-  ExpressionSyntax *operand;
+  std::shared_ptr<ExpressionSyntax> operand;
 
 public:
-  std::vector<SyntaxNode *> children;
   UnaryExpressionSyntax(std::shared_ptr<SyntaxToken<std::any>> operatorToken,
-                        ExpressionSyntax *operand);
+                        std::shared_ptr<ExpressionSyntax> operand);
 
 public:
-  SyntaxKindUtils::SyntaxKind getKind();
+  SyntaxKindUtils::SyntaxKind getKind() override;
 
 public:
   std::shared_ptr<SyntaxToken<std::any>> getOperatorToken();
 
 public:
-  ExpressionSyntax *getOperand();
+  std::shared_ptr<ExpressionSyntax> getOperand();
 
 public:
-  std::vector<SyntaxNode *> getChildren();
+  std::vector<std::shared_ptr<SyntaxNode>> getChildren() override;
 };
 
 #endif // UnaryExpressionSyntax_h__

@@ -4,13 +4,13 @@
 class BoundAssignmentExpression : public BoundExpression {
 private:
   BinderKindUtils::BoundBinaryOperatorKind op;
-  BoundExpression *left;
-  BoundExpression *right;
+  std::shared_ptr<BoundExpression> left;
+  std::shared_ptr<BoundExpression> right;
 
 public:
-  BoundAssignmentExpression(BoundExpression *left,
+  BoundAssignmentExpression(std::shared_ptr<BoundExpression> left,
                             BinderKindUtils::BoundBinaryOperatorKind op,
-                            BoundExpression *right);
+                            std::shared_ptr<BoundExpression> right);
 
 public:
   BinderKindUtils::BoundNodeKind getKind();
@@ -22,8 +22,8 @@ public:
   BinderKindUtils::BoundBinaryOperatorKind getOperator();
 
 public:
-  BoundExpression *getLeft();
+  std::shared_ptr<BoundExpression> getLeft();
 
 public:
-  BoundExpression *getRight();
+  std::shared_ptr<BoundExpression> getRight();
 };
